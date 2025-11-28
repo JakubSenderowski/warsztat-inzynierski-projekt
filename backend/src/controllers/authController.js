@@ -62,4 +62,28 @@ const login = async (req, res) => {
 		return res.status(500).json({ error: 'Wystąpił błąd poczas próby zalogowania' });
 	}
 };
-module.exports = { register, login };
+
+const getMe = async (req, res) => {
+	try {
+		const user = await prisma.user.findUnique({
+			where: { id: req.userId },
+		});
+
+		if (!user) {
+			return res.status(404).json({ error: 'Użytkownik nie znaleziony' });
+		}
+
+		res.json({
+			user: {
+				id: user.id,
+				email: user.email,
+				first_name: user.first_name,
+				last_name: user.last_name,
+				is_active: user.is_active,
+			},
+		});
+	} catch (err) {
+		return res.status(500).json({ error: 'Error servera' });
+	}
+};
+module.exports = { register, login, getMe };
