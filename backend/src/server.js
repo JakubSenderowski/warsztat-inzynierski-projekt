@@ -11,6 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/auth', authRoutes);
+
 //Testowy roucik
 app.get('/health', (req, res) => {
 	res.json({ status: 'ok', msg: 'Server 🏃‍♂️' });
