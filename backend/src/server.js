@@ -15,6 +15,8 @@ const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
 // {Pojazdy i pochodne ~^.^~}
+const vehicleRoutes = require('./routes/vehicleRoute');
+app.use('/api', vehicleRoutes);
 const vehicleBrandRoutes = require('./routes/vehicleBrandRoute');
 app.use('/api/vehicles', vehicleBrandRoutes);
 const vehicleModelRoutes = require('./routes/vehicleModelRoute');
