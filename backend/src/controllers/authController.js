@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const bcrypt = require('bcryptjs');
 const { generateAccessToken, generateRefreshToken } = require('../utils/jwt');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
 	try {
@@ -86,4 +87,24 @@ const getMe = async (req, res) => {
 		return res.status(500).json({ error: 'Error servera' });
 	}
 };
-module.exports = { register, login, getMe };
+
+const refreshToken = async (req, res) => {
+	try {
+		const { refreshToken } = req.body;
+		if (!refreshToken) return res.status(401).json({ error: 'Refresh Token wymagany' });
+
+		const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+		const session = await prisma.session.findUnique({ where: { refresh_token: refreshToken } });
+		if (!session) return res.status(401).json({ error: 'Nie znaleziono refresh token' });
+		if (session.expires_at < new Date()) return res.status(401).json({ error: 'Refresh token wygasł' });
+
+		const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+		const newAccessToken = generateAccessToken(user.id, user.email);
+
+		return res.status(200).json({ accessToken: newAccessToken });
+	} catch (err) {
+		return res.status(500).json({ error: 'Błąd serwera' });
+	}
+};
+module.exports = { register, login, getMe, refreshToken };
