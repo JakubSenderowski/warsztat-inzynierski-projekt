@@ -14,8 +14,10 @@ app.use(cookieParser());
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
-const vehicleRoutes = require('./routes/vehicleRoutes');
-app.use('/api/vehicles', vehicleRoutes);
+const vehicleBrandRoutes = require('./routes/vehicleBrandRoute');
+app.use('/api/vehicles', vehicleBrandRoutes);
+const vehicleModelRoutes = require('./routes/vehicleModelRoute');
+app.use('/api/vehicles', vehicleModelRoutes);
 
 //Testowy roucik
 app.get('/health', (req, res) => {

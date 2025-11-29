@@ -59,12 +59,11 @@ const deleteBrand = async (req, res) => {
 		if (!brandExist) return res.status(404).json({ error: 'Marka nie znaleziona' });
 
 		await prisma.vehicleBrand.delete({ where: { id } });
-		return res.status(200).json({ message: 'Marka usunięta' });
+		return res.status(200).json({ message: 'Marka poprawnie usunięta' });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ error: 'Błąd serwera' });
 	}
 };
-module.exports = { createBrand, getBrands, updateBrand, deleteBrand };
 
-//Zaplanowanie oświadtututuutu
+module.exports = { createBrand, getBrands, updateBrand, deleteBrand };
