@@ -7,10 +7,12 @@ const {
 	updateEngineType,
 	deleteEngineType,
 } = require('../controllers/engineTypeController');
+const { engineValidation } = require('../validators/vehicleValidators');
+const { validateRequest } = require('../middleware/validateRequest');
 
-router.post('/engines', verifyToken, createEngineType);
+router.post('/engines', engineValidation, validateRequest, verifyToken, createEngineType);
 router.get('/engines', verifyToken, getEngineTypes);
-router.put('/engines/:id', verifyToken, updateEngineType);
+router.put('/engines/:id', engineValidation, validateRequest, verifyToken, updateEngineType);
 router.delete('/engines/:id', verifyToken, deleteEngineType);
 
 module.exports = router;
