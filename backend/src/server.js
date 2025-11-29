@@ -14,10 +14,13 @@ app.use(cookieParser());
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
+// {Pojazdy i pochodne ~^.^~}
 const vehicleBrandRoutes = require('./routes/vehicleBrandRoute');
 app.use('/api/vehicles', vehicleBrandRoutes);
 const vehicleModelRoutes = require('./routes/vehicleModelRoute');
 app.use('/api/vehicles', vehicleModelRoutes);
+const engineTypeRoutes = require('./routes/engineTypeRoute');
+app.use('/api/vehicles', engineTypeRoutes);
 
 //Testowy roucik
 app.get('/health', (req, res) => {
