@@ -107,4 +107,14 @@ const refreshToken = async (req, res) => {
 		return res.status(500).json({ error: 'Błąd serwera' });
 	}
 };
-module.exports = { register, login, getMe, refreshToken };
+
+const logout = async (req, res) => {
+	try {
+		const { refreshToken } = req.body;
+		await prisma.session.delete({ where: { refresh_token: refreshToken } });
+		return res.status(200).json({ message: 'Wylogowano poprawnie' });
+	} catch (err) {
+		return res.status(200).json({ message: 'Wylogowano poprawnie' });
+	}
+};
+module.exports = { register, login, getMe, refreshToken, logout };
