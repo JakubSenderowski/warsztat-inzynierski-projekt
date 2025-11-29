@@ -26,6 +26,7 @@ model User {
   user_roles UserRole[]
   sessions Session[]
   audit_logs AuditLog[]
+  vehicles Vehicle[]
   @@map("users")
 }
 
@@ -71,5 +72,54 @@ model AuditLog {
   user_agent String?
   created_at DateTime @default(now())
   user User @relation(fields: [user_id], references: [id])
+
   @@map("audit_logs")
 }
+
+model VehicleBrand {
+  id String @id @default(uuid())
+  name String @unique 
+  country String?
+  logo_url String?
+  created_at DateTime @default(now())
+  vehicle_models VehicleModel[]
+  @@map("vehicle_brands")
+}
+
+model VehicleModel {
+  id String @id @default(uuid())
+  name String
+  brand_id String
+  year_from Int?
+  year_to Int?
+  created_at DateTime @default(now())
+  brand VehicleBrand @relation(fields: [brand_id], references: [id])
+  vehicle Vehicle[]
+  @@map("vehicle_models")
+}
+
+model EngineType {
+  id String @id @default(uuid())
+  name String @unique
+  created_at DateTime @default(now())
+  vehicles Vehicle[]
+  @@map("engine_types")
+}
+
+model Vehicle {
+  id String @id @default(uuid())
+  user_id String
+  model_id String
+  engine_type_id String
+  vin String @unique
+  registration_number String
+  production_year Int
+  mileage Int
+  color String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  user User @relation(fields: [user_id], references: [id])
+  model VehicleModel @relation(fields: [model_id], references: [id])
+  engine EngineType @relation(fields: [engine_type_id], references: [id])
+  @@map("vehicles")
+  }
