@@ -24,6 +24,10 @@ app.use('/api/vehicles', vehicleModelRoutes);
 const engineTypeRoutes = require('./routes/engineTypeRoute');
 app.use('/api/vehicles', engineTypeRoutes);
 
+// {Service i pochodne ~^.^~}
+const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
+app.use('/api', serviceRequestRoutes);
+
 //Testowy roucik
 app.get('/health', (req, res) => {
 	res.json({ status: 'ok', msg: 'Server 🏃‍♂️' });
