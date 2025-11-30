@@ -28,8 +28,10 @@ model User {
   audit_logs AuditLog[]
   vehicles Vehicle[]
   service_requests ServiceRequest[]
+  order_service_items OrderServiceItem[] @relation("PerformedBy")
   assigned_repair_orders RepairOrder[] @relation("AssignedMechanic")
   changed_by_status_history OrderStatusHistory[] @relation("StatusChangedBy")
+  estimates Estimates[] @relation("CreatedBy")
   @@map("users")
 }
 
@@ -126,6 +128,7 @@ model Vehicle {
   engine EngineType @relation(fields: [engine_type_id], references: [id])
   service_requests ServiceRequest[]
   repair_orders RepairOrder[]
+  estimates Estimates[]
   @@map("vehicles")
   }
 
@@ -174,6 +177,9 @@ model RepairOrder {
   service_request ServiceRequest? @relation(fields: [service_request_id], references: [id])
   assigned_mechanic User? @relation("AssignedMechanic", fields: [assigned_mechanic_id], references: [id])
   status_history OrderStatusHistory[]
+  order_part_item OrderPartItem[]
+  estimates Estimates[]
+  order_service_items OrderServiceItem[]
   @@map("repair_orders")
 }
 
@@ -188,4 +194,69 @@ model OrderStatusHistory {
   repair_order RepairOrder @relation(fields: [repair_order_id], references: [id])
   status OrderStatus @relation(fields: [status_id], references: [id])
   @@map("order_status_history")
+}
+
+model ServiceCatalog {
+  id String @id @default(uuid())
+  name String
+  description String?
+  category String?
+  default_price Decimal? @db.Decimal(10, 2)
+  estimated_duration Int?
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  order_service_items OrderServiceItem[]
+  @@map("service_catalog")
+}
+
+model OrderServiceItem {
+  id String @id @default(uuid())
+  repair_order_id String
+  service_catalog_id String?
+  service_name String
+  description String?
+  quantity Decimal @db.Decimal(10,2)
+  unit_price Decimal @db.Decimal(10,2)
+  discount Decimal? @db.Decimal(10)
+  total_price Decimal? @db.Decimal(10,2)
+  performed_by_id String?
+  created_at DateTime @default(now())
+  repair_order RepairOrder @relation(fields: [repair_order_id], references: [id])
+  service_catalog ServiceCatalog? @relation(fields: [service_catalog_id], references: [id])
+  performed_by User? @relation("PerformedBy", fields: [performed_by_id], references: [id]) 
+  @@map("order_service_items")
+}
+
+model OrderPartItem {
+  id String @id @default(uuid())
+  repair_order_id String
+  part_name String
+  part_number String?
+  quantity Decimal @db.Decimal(10,2)
+  unit_price Decimal @db.Decimal(10, 2)
+  discount Decimal? @db.Decimal(10, 2)
+  total_price Decimal? @db.Decimal(10,2)
+  created_at DateTime @default(now())
+  repair_order RepairOrder @relation(fields: [repair_order_id], references: [id])
+  @@map("order_part_items")
+}
+
+model Estimates {
+  id String @id @default(uuid())
+  repair_order_id String?
+  vehicle_id String
+  description String
+  estimated_cost Decimal @db.Decimal(10000, 2)
+  estimated_duration Int? 
+  status String
+  valid_until DateTime?
+  notes String?
+  created_by_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  repair_order RepairOrder @relation(fields: [repair_order_id], references: [id])
+  vehicle Vehicle @relation(fields: [vehicle_id], references: [id])
+  created_by User @relation("CreatedBy", fields: [created_by_id], references: [id])
+  @@map("estimates")
 }
