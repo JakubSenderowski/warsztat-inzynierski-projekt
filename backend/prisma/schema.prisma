@@ -218,7 +218,7 @@ model OrderServiceItem {
   description String?
   quantity Decimal @db.Decimal(10,2)
   unit_price Decimal @db.Decimal(10,2)
-  discount Decimal? @db.Decimal(10)
+  discount Decimal? @db.Decimal(10,2)
   total_price Decimal? @db.Decimal(10,2)
   performed_by_id String?
   created_at DateTime @default(now())
@@ -247,7 +247,7 @@ model Estimates {
   repair_order_id String?
   vehicle_id String
   description String
-  estimated_cost Decimal @db.Decimal(10000, 2)
+  estimated_cost Decimal @db.Decimal(10, 2)
   estimated_duration Int? 
   status String
   valid_until DateTime?
@@ -255,7 +255,7 @@ model Estimates {
   created_by_id String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  repair_order RepairOrder @relation(fields: [repair_order_id], references: [id])
+  repair_order RepairOrder? @relation(fields: [repair_order_id], references: [id])
   vehicle Vehicle @relation(fields: [vehicle_id], references: [id])
   created_by User @relation("CreatedBy", fields: [created_by_id], references: [id])
   @@map("estimates")

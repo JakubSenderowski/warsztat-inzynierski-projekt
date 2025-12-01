@@ -29,7 +29,8 @@ const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 app.use('/api', serviceRequestRoutes);
 const repairOrderRoutes = require('./routes/repairOrderRoutes');
 app.use('/api', repairOrderRoutes);
-
+const serviceCatalogRoutes = require('./routes/serviceCatalogRoutes');
+app.use('/api', serviceCatalogRoutes);
 //Testowy roucik
 app.get('/health', (req, res) => {
 	res.json({ status: 'ok', msg: 'Server 🏃‍♂️' });
