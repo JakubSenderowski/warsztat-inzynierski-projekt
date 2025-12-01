@@ -24,20 +24,19 @@ app.use('/api/vehicles', vehicleModelRoutes);
 const engineTypeRoutes = require('./routes/engineTypeRoute');
 app.use('/api/vehicles', engineTypeRoutes);
 
-// {Service i pochodne ~^.^~}
+// {Service i Repair ~^.^~}
 const serviceRequestRoutes = require('./routes/serviceRequestRoutes');
 app.use('/api', serviceRequestRoutes);
 const repairOrderRoutes = require('./routes/repairOrderRoutes');
 app.use('/api', repairOrderRoutes);
 const serviceCatalogRoutes = require('./routes/serviceCatalogRoutes');
 app.use('/api', serviceCatalogRoutes);
+
+// {Order Routes}
 const orderServiceItemRoutes = require('./routes/orderServiceItemRoutes');
 app.use('/api', orderServiceItemRoutes);
-
-//Testowy roucik
-app.get('/health', (req, res) => {
-	res.json({ status: 'ok', msg: 'Server 🏃‍♂️' });
-});
+const orderPartItemRoutes = require('./routes/orderPartItemRoutes');
+app.use('/api', orderPartItemRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
