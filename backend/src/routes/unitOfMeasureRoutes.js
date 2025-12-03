@@ -6,11 +6,11 @@ const {
 	getUnitMeasures,
 	updateUnitMeasure,
 	deleteUnitMeasure,
-} = require('../controllers/unitOfMeasureController');
+} = require('../controllers/unitsOfMeasureController');
 
 router.post('/units-of-measure', verifyToken, createUnitOfMeasure);
 router.get('/units-of-measure', verifyToken, getUnitMeasures);
-router.put('/units-of-measure/:id', verifyToken, updateUnitOfMeasure);
-router.delete('/units-of-measure/:id', verifyToken, deleteUnitOfMeasure);
+router.put('/units-of-measure/:id', verifyToken, updateUnitMeasure);
+router.delete('/units-of-measure/:id', verifyToken, deleteUnitMeasure);
 
 module.exports = router;
