@@ -38,6 +38,10 @@ app.use('/api', orderServiceItemRoutes);
 const orderPartItemRoutes = require('./routes/orderPartItemRoutes');
 app.use('/api', orderPartItemRoutes);
 
+// {Part Routes}
+const partRoutes = require('./routes/partRoutes');
+app.use('/api', partRoutes);
+
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
 });
