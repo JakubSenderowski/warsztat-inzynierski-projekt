@@ -260,3 +260,59 @@ model Estimates {
   created_by User @relation("CreatedBy", fields: [created_by_id], references: [id])
   @@map("estimates")
 }
+
+model UnitsOfMeasure {
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  created_at DateTime @default(now())
+  parts Part[]
+  @@map("units_of_measure")
+}
+
+model PartCategories  {
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  parts Part[]
+  created_at DateTime @default(now())
+  @@map("part_categories")
+}
+
+model Suppliers {
+  id String @id @default(uuid())
+  name String @unique
+  contact_person String? 
+  email String?
+  phone String?
+  address String?
+  tax_id String?
+  notes String?
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  parts Part[]
+  @@map("suppliers")
+}
+
+model Part {
+  id String @id @default(uuid())
+  part_number String @unique
+  name String
+  description String?
+  category_id String
+  unit_of_measure_id String
+  supplier_id String?
+  unit_price Decimal @db.Decimal(10,2)
+  selling_price Decimal? @db.Decimal(10,2)
+  min_stock_level Int?
+  max_stock_level Int?
+  location String?
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  category PartCategories @relation(fields: [category_id], references: [id])
+  unit_of_measure UnitsOfMeasure @relation(fields: [unit_of_measure_id], references: [id])
+  supplier Suppliers? @relation(fields: [supplier_id], references: [id])
+  @@map("parts")
+}
