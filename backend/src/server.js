@@ -41,6 +41,14 @@ app.use('/api', orderPartItemRoutes);
 // {Part Routes}
 const partRoutes = require('./routes/partRoutes');
 app.use('/api', partRoutes);
+const partCategoryRoutes = require('./routes/partCategoryRoutes');
+app.use('/api', partCategoryRoutes);
+const unitOfMeasureRoutes = require('./routes/unitOfMeasureRoutes');
+app.use('/api', unitOfMeasureRoutes);
+const supplierRoutes = require('./routes/supplierRoutes');
+app.use('/api', supplierRoutes);
+const partRoutes = require('./routes/partRoutes');
+app.use('/api', partRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
