@@ -32,6 +32,7 @@ model User {
   assigned_repair_orders RepairOrder[] @relation("AssignedMechanic")
   changed_by_status_history OrderStatusHistory[] @relation("StatusChangedBy")
   estimates Estimates[] @relation("CreatedBy")
+  invoices Invoice[] @relation("Klient")
   @@map("users")
 }
 
@@ -180,6 +181,7 @@ model RepairOrder {
   order_part_item OrderPartItem[]
   estimates Estimates[]
   order_service_items OrderServiceItem[]
+  invoices Invoice[]
   @@map("repair_orders")
 }
 
@@ -315,4 +317,65 @@ model Part {
   unit_of_measure UnitsOfMeasure @relation(fields: [unit_of_measure_id], references: [id])
   supplier Suppliers? @relation(fields: [supplier_id], references: [id])
   @@map("parts")
+}
+
+model TaxRate {
+  id String @id @default(uuid())
+  name String @unique
+  rate Decimal @db.Decimal(10,2)
+  description String?
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  invoice_items InvoiceItem[]
+  @@map("tax_rates")
+}
+
+model PaymentMethod {
+  id String @id @default(uuid())
+  name String @unique
+  description String?
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  invoices Invoice[]
+  @@map("payment_methods")
+}
+
+model Invoice {
+  id String @id @default(uuid())
+  invoice_number String @unique
+  repair_order_id String?
+  klient_id String
+  payment_method_id String
+  issue_date DateTime
+  due_date DateTime?
+  paid_date DateTime?
+  subtotal Decimal @db.Decimal(10,2)
+  tax_amount Decimal @db.Decimal(10,2)
+  total_amount Decimal @db.Decimal(10,2)
+  status String
+  notes String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  repair_order RepairOrder? @relation(fields: [repair_order_id], references: [id])
+  klient User @relation("Klient", fields: [klient_id], references: [id])
+  payment_method PaymentMethod @relation(fields: [payment_method_id], references: [id])
+  invoice_items InvoiceItem[]
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id String @id @default(uuid())
+  invoice_id String
+  item_type String
+  description String?
+  name String
+  quantity Decimal @db.Decimal(10,2)
+  unit_price Decimal @db.Decimal(10,2)
+  tax_rate_id String
+  tax_amount Decimal @db.Decimal(10,2)
+  total_amount Decimal @db.Decimal(10,2)
+  created_at DateTime @default(now())
+  tax_rate TaxRate @relation(fields: [tax_rate_id], references: [id])
+  invoice Invoice @relation(fields: [invoice_id], references: [id])
+  @@map("invoice_items")
 }
