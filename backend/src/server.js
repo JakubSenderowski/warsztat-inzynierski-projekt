@@ -48,6 +48,16 @@ app.use('/api', unitOfMeasureRoutes);
 const supplierRoutes = require('./routes/supplierRoutes');
 app.use('/api', supplierRoutes);
 
+// {Rouciki od finansów}
+const taxRateRoutes = require('./routes/taxRateRoutes');
+app.use('/api', taxRateRoutes);
+const paymentMethodRoutes = require('./routes/paymentMethodRoutes');
+app.use('/api', paymentMethodRoutes);
+const invoiceRoutes = require('./routes/invoiceRoutes');
+app.use('/api', invoiceRoutes);
+const invoiceItemRoutes = require('./routes/invoiceItemRoutes');
+app.use('/api', invoiceItemRoutes);
+
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
 });
