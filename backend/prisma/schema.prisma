@@ -33,6 +33,9 @@ model User {
   changed_by_status_history OrderStatusHistory[] @relation("StatusChangedBy")
   estimates Estimates[] @relation("CreatedBy")
   invoices Invoice[] @relation("Klient")
+  client_appointments Appointments[] @relation("Klient")
+  mechanic_appointments Appointments[] @relation("Mechanik")
+  mechanic_schedules MechanicSchedules[] @relation("Mechanik")
   @@map("users")
 }
 
@@ -130,6 +133,7 @@ model Vehicle {
   service_requests ServiceRequest[]
   repair_orders RepairOrder[]
   estimates Estimates[]
+  appointments Appointments[]
   @@map("vehicles")
   }
 
@@ -157,6 +161,7 @@ model ServiceRequest {
   user User @relation(fields: [user_id], references: [id])
   vehicle Vehicle? @relation(fields: [vehicle_id], references: [id])
   repair_orders RepairOrder[]
+  appointments Appointments[]
   @@map("service_requests")
 }
 
@@ -378,4 +383,36 @@ model InvoiceItem {
   tax_rate TaxRate @relation(fields: [tax_rate_id], references: [id])
   invoice Invoice @relation(fields: [invoice_id], references: [id])
   @@map("invoice_items")
+}
+
+model Appointments {
+  id String @id @default(uuid())
+  vehicle_id String
+  klient_id String
+  mechanic_id String?
+  service_request_id String?
+  appointment_date DateTime
+  estimated_duration Int 
+  status String
+  notes String?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  klient User @relation("Klient", fields: [klient_id], references: [id])
+  mechanic User? @relation("Mechanik", fields: [mechanic_id], references: [id])
+  vehicle Vehicle @relation(fields: [vehicle_id], references: [id])
+  service_request ServiceRequest? @relation(fields: [service_request_id], references: [id])
+  @@map("appointments")
+}
+
+model MechanicSchedules {
+  id String @id @default(uuid())
+  mechanic_id String
+  date DateTime @default(now())
+  start_time DateTime 
+  end_time DateTime
+  is_available Boolean @default(true)
+  notes String?
+  created_at DateTime @default(now())
+  mechanic User @relation("Mechanik", fields: [mechanic_id], references: [id])
+  @@map("mechanic_schedules")
 }
