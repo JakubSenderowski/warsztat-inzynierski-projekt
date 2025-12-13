@@ -59,6 +59,10 @@ const invoiceItemRoutes = require('./routes/invoiceItemRoutes');
 app.use('/api', invoiceItemRoutes);
 
 // {Kalendarze Roucik}
+const appointmentRoutes = require('./routes/appointmentRoutes');
+app.use('/api', appointmentRoutes);
+const mechanicScheduleRoutes = require('./routes/mechanicScheduleRoutes');
+app.use('/api', mechanicScheduleRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
