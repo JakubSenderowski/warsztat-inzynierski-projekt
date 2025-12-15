@@ -36,6 +36,7 @@ model User {
   client_appointments Appointments[] @relation("Klient")
   mechanic_appointments Appointments[] @relation("Mechanik")
   mechanic_schedules MechanicSchedules[] @relation("Mechanik")
+  file_attachments FileAttachments[] @relation("UploadedBy")
   @@map("users")
 }
 
@@ -415,4 +416,40 @@ model MechanicSchedules {
   created_at DateTime @default(now())
   mechanic User @relation("Mechanik", fields: [mechanic_id], references: [id])
   @@map("mechanic_schedules")
+}
+
+model SystemSettings {
+  id String @id @default(uuid())
+  setting_key String @unique
+  description String?
+  setting_value String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("system_settings")
+}
+
+model PrintTemplates {
+  id String @id @default(uuid())
+  name String
+  template_type String
+  template_content String
+  is_default Boolean @default(true)
+  is_active Boolean @default(true)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("print_templates")
+}
+
+model FileAttachments {
+  id String @id @default(uuid())
+  file_name String
+  file_path String
+  file_type String
+  file_size Int
+  related_entity_type String?
+  related_entity_id String?
+  uploaded_by_id String?
+  created_at DateTime @default(now())
+  uploaded_by User? @relation("UploadedBy", fields: [uploaded_by_id], references: [id])
+  @@map("file_attachments")
 }
