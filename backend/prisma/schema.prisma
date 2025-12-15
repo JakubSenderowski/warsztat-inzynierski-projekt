@@ -430,7 +430,7 @@ model SystemSettings {
 
 model PrintTemplates {
   id String @id @default(uuid())
-  name String
+  name String @unique
   template_type String
   template_content String
   is_default Boolean @default(true)
