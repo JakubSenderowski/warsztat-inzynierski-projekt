@@ -70,3 +70,5 @@ const deletePrintTemplate = async (req, res) => {
 		return res.status(500).json({ error: 'Błąd serwera' });
 	}
 };
+
+module.exports = { createPrintTemplate, getPrintTemplates, updatePrintTemplate, deletePrintTemplate };

@@ -64,6 +64,15 @@ app.use('/api', appointmentRoutes);
 const mechanicScheduleRoutes = require('./routes/mechanicScheduleRoutes');
 app.use('/api', mechanicScheduleRoutes);
 
+// {Ustawionka + Pliki}
+
+const systemSettingRoutes = require('./routes/systemSettingRoutes');
+app.use('/api', systemSettingRoutes);
+const printTemplateRoutes = require('./routes/printTemplateRoutes');
+app.use('/api', printTemplateRoutes);
+const fileAttachmentRoutes = require('./routes/fileAttachmentRoutes');
+app.use('/api', fileAttachmentRoutes);
+
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
 });
