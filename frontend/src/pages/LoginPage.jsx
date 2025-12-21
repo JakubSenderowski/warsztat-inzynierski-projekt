@@ -14,11 +14,22 @@ function LoginPage() {
 			password,
 		})
 			.then(function (response) {
-				console.log('RESPONSE DATA:', response.data);
-				console.log('USER:', response.data.user);
-				console.log('ROLE:', response.data.user.role);
-				localStorage.setItem('token', response.data.token);
-				navigate('/dashboard');
+				const { user, accessToken, refreshToken } = response.data;
+				localStorage.setItem('accessToken', accessToken);
+				localStorage.setItem('refreshToken', refreshToken);
+
+				localStorage.setItem('role', user.role || 'Customer');
+
+				const role = response.data.user.role;
+				if (role === 'Admin') {
+					navigate('/admin-dashboard');
+				} else if (role === 'Mechanik') {
+					navigate('/mechanic-dashboard');
+				} else if (role === 'Magazynier') {
+					navigate('/warehouseman-dashboard');
+				} else {
+					navigate('/customer');
+				}
 			})
 			.catch(function (error) {
 				console.log(error);
