@@ -29,9 +29,18 @@ const register = async (req, res) => {
 const login = async (req, res) => {
 	try {
 		const { email, password } = req.body;
-		const user = await prisma.user.findUnique({ where: { email } });
+		const user = await prisma.user.findUnique({
+			where: { email },
+			include: {
+				user_roles: {
+					include: {
+						role: true,
+					},
+				},
+			},
+		});
 		if (!user) return res.status(400).json({ error: 'Nieprawidłowe dane' });
-
+		const roleName = user.user_roles[0]?.role?.name || null;
 		const passwordCheck = await bcrypt.compare(password, user.password_hash);
 		if (!passwordCheck) return res.status(400).json({ error: 'Nieprawidłowe dane' });
 		if (!user.is_active) return res.status(403).json({ error: 'Konto dezaktywowane' });
@@ -55,6 +64,7 @@ const login = async (req, res) => {
 				email: user.email,
 				first_name: user.first_name,
 				last_name: user.last_name,
+				role: roleName,
 			},
 			accessToken,
 			refreshToken,
