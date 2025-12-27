@@ -3,9 +3,15 @@ import { MdDashboard } from 'react-icons/md';
 import { IoIosPerson } from 'react-icons/io';
 import { GiMechanicGarage } from 'react-icons/gi';
 import { FaWarehouse } from 'react-icons/fa';
-
+import { useNavigate } from 'react-router-dom';
 function SideBar({ userData }) {
 	const role = localStorage.getItem('role');
+	const navigate = useNavigate();
+	function handleClick() {
+		console.log('Button - Hej');
+		navigate('/');
+		localStorage.clear();
+	}
 	return (
 		<div className='bg-[#080F25] h-screen w-[300px] px-[28px] border-r border-[#FDB52A] shadow-[4px_0_20px_rgba(0,0,0,0.35)]'>
 			<div className='pt-[38px] pb-[41px]'>
@@ -17,7 +23,7 @@ function SideBar({ userData }) {
 					to='/admin-dashboard'
 					className='flex items-center gap-2 text-[#CB3CFF] opacity-80 hover:opacity-100'>
 					<MdDashboard className='text-xl' />
-					<span>Admin - HardCoded</span>
+					<span>AdminDashboard - HardCoded</span>
 				</Link>
 
 				<Link to='/customer' className='flex items-center gap-2 text-white opacity-80 hover:opacity-100'>
@@ -47,6 +53,7 @@ function SideBar({ userData }) {
 			</div>
 			<div className='pt-[64px]'>
 				<button
+					onClick={handleClick}
 					className='
 					w-full
 				text-white

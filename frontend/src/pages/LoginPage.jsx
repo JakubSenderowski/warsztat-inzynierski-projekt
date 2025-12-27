@@ -8,7 +8,7 @@ function LoginPage() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log('Próba zalogowania się:', email, password);
-
+		Object.keys(localStorage);
 		api.post('/api/auth/login', {
 			email,
 			password,
@@ -17,7 +17,6 @@ function LoginPage() {
 				const { user, accessToken, refreshToken } = response.data;
 				localStorage.setItem('accessToken', accessToken);
 				localStorage.setItem('refreshToken', refreshToken);
-
 				localStorage.setItem('role', user.role || 'Customer');
 
 				const role = response.data.user.role;
