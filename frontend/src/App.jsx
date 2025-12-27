@@ -1,13 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashBoardPage';
-import VehiclesPage from './pages/VehiclesPage';
+import VehiclesPage from './pages/Vehicles/VehiclesPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import MechanicDasboard from './pages/MechanicDashboard';
 import WarehousemanDashboard from './pages/WarehousemanDashboard';
 import CustomerPage from './pages/CustomerPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoleBasedRoute from './utils/RoleBasedRoute';
+import VehicleAddPage from './pages/Vehicles/VehicleAddPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -19,6 +20,22 @@ function App() {
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
 								<AdminDashboardPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/vehicles'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<VehiclesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/vehicles-add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<VehicleAddPage />
 							</RoleBasedRoute>
 						}
 					/>
