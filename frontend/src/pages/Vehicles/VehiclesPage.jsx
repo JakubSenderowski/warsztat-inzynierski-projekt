@@ -23,6 +23,18 @@ function VehiclesPage() {
 	function handleAdd() {
 		navigate('/vehicles-add');
 	}
+	const handleDelete = async (vehicleId) => {
+		if (!window.confirm('Na pewno usunąć pojazd?')) {
+			return;
+		}
+
+		try {
+			await api.delete(`/api/vehicles/${vehicleId}`);
+			setVehicles(vehicles.filter((v) => v.id !== vehicleId));
+		} catch (err) {
+			console.log(err);
+		}
+	};
 	return (
 		<Layout>
 			<div className='px-[28px] pt-[35px]'>
@@ -74,6 +86,7 @@ function VehiclesPage() {
 											</button>
 
 											<button
+												onClick={() => handleDelete(vehicle.id)}
 												className='text-red-400 hover:text-red-300 transition-colors'
 												title='Usuń'>
 												<MdDelete size={20} />
