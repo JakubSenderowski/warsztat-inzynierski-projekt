@@ -65,7 +65,21 @@ function VehiclesPage() {
 									<td className='px-4 py-3 text-white/70'>{vehicle.production_year}</td>
 									<td className='px-4 py-3 text-white/70'>{vehicle.mileage} km</td>
 									<td className='px-4 py-3 text-white/70'>{vehicle.color}</td>
-									<td className='px-4 py-3'></td>
+									<td className='px-4 py-3'>
+										<div className='flex items-center gap-3'>
+											<button
+												className='text-blue-400 hover:text-blue-300 transition-colors'
+												title='Edytuj'>
+												<MdEdit size={20} />
+											</button>
+
+											<button
+												className='text-red-400 hover:text-red-300 transition-colors'
+												title='Usuń'>
+												<MdDelete size={20} />
+											</button>
+										</div>
+									</td>
 								</tr>
 							))}
 						</tbody>
