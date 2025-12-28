@@ -23,6 +23,7 @@ function VehiclesPage() {
 	function handleAdd() {
 		navigate('/vehicles-add');
 	}
+
 	const handleDelete = async (vehicleId) => {
 		if (!window.confirm('Na pewno usunąć pojazd?')) {
 			return;
@@ -80,6 +81,7 @@ function VehiclesPage() {
 									<td className='px-4 py-3'>
 										<div className='flex items-center gap-3'>
 											<button
+												onClick={() => navigate(`/vehicles/edit/${vehicle.id}`)}
 												className='text-blue-400 hover:text-blue-300 transition-colors'
 												title='Edytuj'>
 												<MdEdit size={20} />

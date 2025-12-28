@@ -9,6 +9,7 @@ import CustomerPage from './pages/CustomerPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoleBasedRoute from './utils/RoleBasedRoute';
 import VehicleAddPage from './pages/Vehicles/VehicleAddPage';
+import VehiclesEditPage from './pages/Vehicles/VehiclesEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -36,6 +37,14 @@ function App() {
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
 								<VehicleAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/vehicles/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<VehiclesEditPage />
 							</RoleBasedRoute>
 						}
 					/>
