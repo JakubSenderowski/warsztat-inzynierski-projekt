@@ -10,6 +10,9 @@ import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoleBasedRoute from './utils/RoleBasedRoute';
 import VehicleAddPage from './pages/Vehicles/VehicleAddPage';
 import VehiclesEditPage from './pages/Vehicles/VehiclesEditPage';
+import PartsPage from './pages/Parts/PartsPage';
+import PartAddPage from './pages/Parts/PartsAdd';
+import PartEditPage from './pages/Parts/PartsEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -61,6 +64,30 @@ function App() {
 						element={
 							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
 								<WarehousemanDashboard />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/parts'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<PartsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/parts/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<PartAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/parts/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<PartEditPage />
 							</RoleBasedRoute>
 						}
 					/>
