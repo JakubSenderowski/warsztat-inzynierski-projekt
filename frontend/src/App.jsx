@@ -13,6 +13,9 @@ import VehiclesEditPage from './pages/Vehicles/VehiclesEditPage';
 import PartsPage from './pages/Parts/PartsPage';
 import PartAddPage from './pages/Parts/PartsAdd';
 import PartEditPage from './pages/Parts/PartsEditPage';
+import SuppliersPage from './pages/suppliers/SuppliersPage';
+import SuppliersAddPage from './pages/suppliers/SuppliersAddPage';
+import SuppliersEditPage from './pages/suppliers/SuppliersEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -96,6 +99,30 @@ function App() {
 						element={
 							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<CustomerPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/suppliers'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<SuppliersPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/suppliers/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<SuppliersAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/suppliers/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+								<SuppliersEditPage />
 							</RoleBasedRoute>
 						}
 					/>
