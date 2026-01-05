@@ -3,11 +3,9 @@ const prisma = new PrismaClient();
 
 const createVehicle = async (req, res) => {
 	try {
-		const { user_id, model_id, engine_type_id, vin, registration_number, production_year, mileage, color } =
-			req.body;
+		const { model_id, engine_type_id, vin, registration_number, production_year, mileage, color } = req.body;
+		const user_id = req.userId;
 
-		const userExist = await prisma.user.findUnique({ where: { id: user_id } });
-		if (!userExist) return res.status(404).json({ error: 'Użytkownik nie istnieje' });
 		const modelExist = await prisma.vehicleModel.findUnique({ where: { id: model_id } });
 		if (!modelExist) return res.status(404).json({ error: 'Model nie istnieje' });
 		const engineExist = await prisma.engineType.findUnique({ where: { id: engine_type_id } });

@@ -25,7 +25,10 @@ const createModel = async (req, res) => {
 
 const getModels = async (req, res) => {
 	try {
-		const allModels = await prisma.vehicleModel.findMany({ include: { brand: true } });
+		const { brand_id } = req.query;
+
+		const where = brand_id ? { brand_id } : {};
+		const allModels = await prisma.vehicleModel.findMany({ where, include: { brand: true } });
 		return res.status(200).json(allModels);
 	} catch (err) {
 		console.log(err);

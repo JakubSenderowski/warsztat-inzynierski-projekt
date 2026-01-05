@@ -12,6 +12,14 @@ const register = async (req, res) => {
 
 		const password_hash = await bcrypt.hash(password, 10);
 		const createUser = await prisma.user.create({ data: { email, password_hash, first_name, last_name, phone } });
+		const findCustomerRole = await prisma.role.findUnique({ where: { name: 'Customer' } });
+		if (!findCustomerRole) return res.status(500).json({ error: "Rola 'Customer' nie istnieje!" });
+		await prisma.userRole.create({
+			data: {
+				user_id: createUser.id,
+				role_id: findCustomerRole.id,
+			},
+		});
 		return res.status(201).json({
 			message: 'Użytkownik stworzony',
 			user: {

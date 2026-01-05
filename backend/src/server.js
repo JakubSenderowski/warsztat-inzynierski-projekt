@@ -73,6 +73,10 @@ app.use('/api', printTemplateRoutes);
 const fileAttachmentRoutes = require('./routes/fileAttachmentRoutes');
 app.use('/api', fileAttachmentRoutes);
 
+// {Użytkownik}
+
+const userRoutes = require('./routes/userRoutes');
+app.use('/api', userRoutes);
 app.listen(PORT, () => {
 	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
 });

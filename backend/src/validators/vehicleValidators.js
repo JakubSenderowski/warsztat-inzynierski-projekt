@@ -40,11 +40,6 @@ const engineValidation = [
 ];
 
 const vehicleValidation = [
-	body('user_id')
-		.notEmpty()
-		.withMessage('Pole User nie może być puste')
-		.isUUID()
-		.withMessage('Pole user UUID musi mieć poprawny format'),
 	body('model_id')
 		.notEmpty()
 		.withMessage('Pole Model nie może być puste')
