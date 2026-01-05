@@ -16,6 +16,9 @@ import PartEditPage from './pages/Parts/PartsEditPage';
 import SuppliersPage from './pages/suppliers/SuppliersPage';
 import SuppliersAddPage from './pages/suppliers/SuppliersAddPage';
 import SuppliersEditPage from './pages/suppliers/SuppliersEditPage';
+import UsersPage from './pages/users/UsersPage';
+import UserAddPage from './pages/users/UserAddPage';
+import UserEditPage from './pages/users/UserEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -130,7 +133,23 @@ function App() {
 						path='/users'
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
-								<SuppliersEditPage />
+								<UsersPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/users/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<UserAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/users/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<UserEditPage />
 							</RoleBasedRoute>
 						}
 					/>
