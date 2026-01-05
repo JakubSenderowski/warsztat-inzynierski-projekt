@@ -35,29 +35,35 @@ function LoginPage() {
 			});
 	};
 	return (
-		<div className='min-h-screen flex items-center justify-center '>
-			<div className='w-[400px] bg-white p-8 rounded-lg shadow-lg'>
-				<h1 className='text-3xl font-bold text-blue-600 mb-6'>Login page</h1>
-				<form onSubmit={handleSubmit}>
+		<div className='min-h-screen flex items-center justify-center bg-[#080F25] px-6'>
+			<div className='w-[400px] bg-[#101935] p-8 rounded-xl border border-white/10 shadow-lg'>
+				<h1 className='text-2xl font-medium text-white mb-2'>Logowanie</h1>
+				<p className='text-sm text-white/60 mb-6'>Zaloguj się do systemu</p>
+
+				<form onSubmit={handleSubmit} className='space-y-4'>
 					<input
 						type='email'
-						placeholder='email'
-						className='px-4 py-2 w-full rounded-md mb-4 border'
+						placeholder='Email'
+						className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-indigo-500 transition'
 						value={email}
 						onChange={(e) => {
 							setEmail(e.target.value);
 						}}
 					/>
+
 					<input
 						type='password'
-						placeholder='hasło'
-						className='px-4 py-2 w-full rounded-md mb-6 border'
+						placeholder='Hasło'
+						className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-indigo-500 transition'
 						value={password}
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
 					/>
-					<button className='bg-blue-600 text-white px-4 py-2 w-full hover:bg-blue-700'>Login</button>
+
+					<button className='w-full bg-[#FDB52A] text-black py-2 rounded-lg font-medium hover:bg-[#e6a823] transition'>
+						Zaloguj się
+					</button>
 				</form>
 			</div>
 		</div>

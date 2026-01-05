@@ -126,6 +126,14 @@ function App() {
 							</RoleBasedRoute>
 						}
 					/>
+					<Route
+						path='/users'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<SuppliersEditPage />
+							</RoleBasedRoute>
+						}
+					/>
 				</Route>
 			</Routes>
 		</BrowserRouter>
