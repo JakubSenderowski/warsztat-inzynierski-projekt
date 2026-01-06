@@ -22,6 +22,9 @@ import UserEditPage from './pages/users/UserEditPage';
 import RepairsPage from './pages/repairs/RepairsPage';
 import RepairAddPage from './pages/repairs/RepairAddPage';
 import RepairEditPage from './pages/repairs/RepairEditPage';
+import InvoicesPage from './pages/invoices/InvoicesPage';
+import InvoiceAddPage from './pages/invoices/InvoicesAddPage';
+import InvoiceEditPage from './pages/invoices/InvoicesEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -181,6 +184,30 @@ function App() {
 						}
 					/>
 				</Route>
+				<Route
+					path='/invoices'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<InvoicesPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/invoices/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<InvoiceAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/invoices/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<InvoiceEditPage />
+						</RoleBasedRoute>
+					}
+				/>
 			</Routes>
 		</BrowserRouter>
 	);

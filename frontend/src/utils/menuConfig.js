@@ -4,6 +4,7 @@ import { MdHomeRepairService } from 'react-icons/md';
 import { FaTools } from 'react-icons/fa';
 import { CiDeliveryTruck } from 'react-icons/ci';
 import { FaUsers } from 'react-icons/fa';
+import { FaFileInvoiceDollar } from 'react-icons/fa';
 const menuItems = [
 	{ name: 'Dashboard', path: '/admin-dashboard', icon: MdDashboard, roles: ['Admin'] },
 	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin'] },
@@ -11,6 +12,7 @@ const menuItems = [
 	{ name: 'Cześci', path: '/parts', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Dostawcy', path: '/suppliers', icon: CiDeliveryTruck, roles: ['Admin'] },
 	{ name: 'Użytkownicy', path: '/users', icon: FaUsers, roles: ['Admin'] },
+	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin'] },
 ];
 
 export default menuItems;
