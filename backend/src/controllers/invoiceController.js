@@ -29,14 +29,23 @@ const createInvoice = async (req, res) => {
 			if (!repairOrderExist) return res.status(404).json({ error: 'Zgłoszenie naprawy nie isniteje' });
 		}
 
+		let issue_date_iso = null;
+		if (issue_date) {
+			issue_date_iso = new Date(issue_date).toISOString();
+		}
+
+		let due_date_iso = null;
+		if (due_date) {
+			due_date_iso = new Date(due_date).toISOString();
+		}
 		const newInvoice = await prisma.invoice.create({
 			data: {
 				invoice_number,
 				repair_order_id,
 				klient_id,
 				payment_method_id,
-				issue_date,
-				due_date,
+				issue_date: issue_date_iso,
+				due_date: due_date_iso,
 				paid_date,
 				subtotal,
 				tax_amount,
@@ -115,6 +124,15 @@ const updateInvoice = async (req, res) => {
 			}
 		}
 
+		let issue_date_iso = null;
+		if (issue_date) {
+			issue_date_iso = new Date(issue_date).toISOString();
+		}
+
+		let due_date_iso = null;
+		if (due_date) {
+			due_date_iso = new Date(due_date).toISOString();
+		}
 		const updatedInvoice = await prisma.invoice.update({
 			where: { id },
 			data: {
@@ -122,8 +140,8 @@ const updateInvoice = async (req, res) => {
 				repair_order_id,
 				klient_id,
 				payment_method_id,
-				issue_date,
-				due_date,
+				issue_date: issue_date_iso,
+				due_date: due_date_iso,
 				paid_date,
 				subtotal,
 				tax_amount,
