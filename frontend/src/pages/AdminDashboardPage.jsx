@@ -2,8 +2,9 @@ import Layout from '../components/Layout';
 import { FaCloudDownloadAlt, FaAddressBook } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import api from '../api/api';
-
+import { useNavigate } from 'react-router-dom';
 function AdminDashboardPage() {
+	const navigate = useNavigate();
 	const [userData, setUserData] = useState('Loading');
 
 	useEffect(() => {
@@ -49,6 +50,9 @@ function AdminDashboardPage() {
 		fetchStats();
 	});
 
+	function handleAdd() {
+		navigate('/users/add');
+	}
 	return (
 		<Layout>
 			<div className='px-[28px] pt-[35px]'>
@@ -66,7 +70,9 @@ function AdminDashboardPage() {
 							<FaCloudDownloadAlt />
 						</button>
 
-						<button className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
+						<button
+							onClick={handleAdd}
+							className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
 							Dodaj pracownika
 							<FaAddressBook />
 						</button>
