@@ -39,7 +39,14 @@ const repairOrderValidation = [
 		.isLength({ min: 10 })
 		.withMessage('Opis musi mieć minimum 10 znaków'),
 	body('notes').trim().optional(),
-	body('estimated_completion').optional().isISO8601().withMessage('Format daty musi być poprawny'),
+	body('estimated_completion')
+		.optional()
+		.custom((value) => {
+			if (!/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/.test(value)) {
+				throw new Error('Nieprawidłowy format daty');
+			}
+			return true;
+		}),
 	body('total_cost')
 		.optional()
 		.isDecimal({ decimal_digits: '0,2' })

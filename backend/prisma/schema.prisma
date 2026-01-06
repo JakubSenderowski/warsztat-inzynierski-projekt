@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")8
+  url = env("DATABASE_URL")
 }
 
 model User {
@@ -174,7 +174,7 @@ model RepairOrder {
   status_id String
   description String
   notes String?
-  estimated_completion DateTime?
+  estimated_completion DateTime? 
   actual_completion DateTime?
   total_cost Decimal? @db.Decimal(10, 2)
   created_at DateTime @default(now())

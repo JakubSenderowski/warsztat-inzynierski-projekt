@@ -74,9 +74,13 @@ const fileAttachmentRoutes = require('./routes/fileAttachmentRoutes');
 app.use('/api', fileAttachmentRoutes);
 
 // {Użytkownik}
-
 const userRoutes = require('./routes/userRoutes');
 app.use('/api', userRoutes);
+
+// {Statusy Orderu}
+const orderStatusRoutes = require('./routes/orderStatusRoutes');
+app.use('/api', orderStatusRoutes);
+
 app.listen(PORT, () => {
-	console.log(`Server 🏃‍♂️ on http://localhost:${PORT}`);
+	console.log(`Server Biega na tym porciku http://localhost:${PORT}`);
 });

@@ -32,6 +32,10 @@ const createRepairOrder = async (req, res) => {
 				return res.status(404).json({ error: 'Zgłoszenie nie istnieje' });
 			}
 		}
+		let estimated_completion_iso = null;
+		if (estimated_completion) {
+			estimated_completion_iso = new Date(estimated_completion).toISOString();
+		}
 		const newRepairOrder = await prisma.repairOrder.create({
 			data: {
 				vehicle_id,
@@ -40,7 +44,7 @@ const createRepairOrder = async (req, res) => {
 				service_request_id,
 				assigned_mechanic_id,
 				notes,
-				estimated_completion,
+				estimated_completion: estimated_completion_iso,
 				total_cost,
 			},
 			include: {
@@ -119,6 +123,10 @@ const updateRepairOrder = async (req, res) => {
 				return res.status(404).json({ error: 'Mechanik nie istnieje' });
 			}
 		}
+		let estimated_completion_iso = null;
+		if (estimated_completion) {
+			estimated_completion_iso = new Date(estimated_completion).toISOString();
+		}
 		const updatedRepairOrder = await prisma.repairOrder.update({
 			where: { id },
 			data: {
@@ -128,7 +136,7 @@ const updateRepairOrder = async (req, res) => {
 				service_request_id,
 				assigned_mechanic_id,
 				notes,
-				estimated_completion,
+				estimated_completion: estimated_completion_iso,
 				total_cost,
 			},
 			include: {
