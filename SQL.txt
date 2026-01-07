@@ -1,0 +1,33 @@
+Widoczki: 
+
+v_active_repairs - Wyświetla aktywne zlecenia naprawy (status: Pending, In Progress, Awaiting Parts) z danymi pojazdu, właściciela pojazdu, przypisanego mechanika i statusu. Upraszcza złożone zapytanie z 4 JOIN-ami do jednego SELECT.
+v_invoice_summary - Pokazuje podsumowanie faktur z danymi klienta (imię, nazwisko) i nazwą metody płatności. Łączy dane z tabel invoices, users i payment_methods.
+v_parts_low_stock - Wyświetla części z magazynu które mają ustawiony min_stock_level (monitorowane pod kątem niskiego stanu), wraz z nazwą kategorii i dostawcy.
+
+Procedury: 
+
+sp_complete_repair_order(repair_order_id, new_mileage, changed_by_id) - Zamyka zlecenie naprawy w sposób atomowy: ustawia actual_completion, zmienia status na "Completed", dodaje wpis do historii statusów, aktualizuje przebieg pojazdu. Wszystko w jednej transakcji.
+sp_generate_invoice_from_order(repair_order_id, payment_method_id, invoice_number, OUT invoice_id) - Generuje fakturę na podstawie zlecenia naprawy: pobiera klienta z pojazdu, oblicza sumy z order_service_items i order_part_items, kalkuluje VAT (23%), tworzy fakturę ze statusem "Issued", zwraca ID utworzonej faktury.
+sp_update_part_stock(part_id, quantity_change, operation) - Przykładowa procedura do zarządzania stanem magazynowym części (ADD/REMOVE), sprawdza min_stock_level i loguje operacje. Teoretyczna implementacja - w projekcie brak kolumny current_stock.
+
+Funkcje: 
+
+fn_calculate_repair_total(repair_order_id) → DECIMAL - Oblicza całkowity koszt zlecenia naprawy sumując total_price z order_service_items i order_part_items. Można używać w SELECT jak zwykłą kolumnę.
+fn_get_vehicle_service_count(vehicle_id) → INT - Zwraca liczbę wykonanych napraw dla danego pojazdu. Liczy wszystkie repair_orders przypisane do vehicle_id.
+fn_check_part_availability(part_id) → VARCHAR - Sprawdza status dostępności części: zwraca "Inactive" (nieaktywna), "Not Monitored" (brak min_stock_level) lub "Available". Teoretyczna implementacja bez kolumny current_stock.
+
+Indeksy: 
+
+idx_users_email - Przyspieszenie logowania (WHERE email = ...)
+idx_vehicles_vin - Szybkie wyszukiwanie po numerze VIN
+idx_vehicles_user_id - JOIN vehicles → users (właściciel)
+idx_repair_orders_vehicle_id - JOIN repair_orders → vehicles
+idx_repair_orders_status_id - Filtrowanie zleceń po statusie (WHERE status_id)
+idx_repair_orders_assigned_mechanic_id - Filtrowanie zleceń mechanika
+idx_invoices_klient_id - JOIN invoices → users (klient)
+idx_invoices_repair_order_id - JOIN invoices → repair_orders
+idx_order_service_items_repair_order_id - JOIN order_service_items → repair_orders
+idx_order_part_items_repair_order_id - JOIN order_part_items → repair_orders
+idx_parts_part_number - Szybkie wyszukiwanie części po numerze
+idx_appointments_klient_id - Filtrowanie wizyt klienta
+idx_appointments_mechanic_id - Filtrowanie wizyt mechanika
