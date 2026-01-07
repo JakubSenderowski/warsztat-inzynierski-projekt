@@ -30,13 +30,17 @@ const createAppointment = async (req, res) => {
 				return res.status(404).json({ error: 'Zgłoszenie serwisowe nie istnieje' });
 			}
 		}
+		let appointment_date_iso = null;
+		if (appointment_date) {
+			appointment_date_iso = new Date(appointment_date).toISOString();
+		}
 		const newAppointment = await prisma.appointments.create({
 			data: {
 				vehicle_id,
 				klient_id,
 				mechanic_id,
 				service_request_id,
-				appointment_date,
+				appointment_date: appointment_date_iso,
 				estimated_duration,
 				status,
 				notes,
@@ -59,7 +63,15 @@ const getAppointments = async (req, res) => {
 	try {
 		const allAppointments = await prisma.appointments.findMany({
 			include: {
-				vehicle: true,
+				vehicle: {
+					include: {
+						model: {
+							include: {
+								brand: true,
+							},
+						},
+					},
+				},
 				klient: true,
 				mechanic: true,
 				service_request: true,
@@ -105,7 +117,10 @@ const updateAppointment = async (req, res) => {
 			const serviceExist = await prisma.serviceRequest.findUnique({ where: { id: service_request_id } });
 			if (!serviceExist) return res.status(404).json({ error: 'Zlecenie serwisowe nie istnieje' });
 		}
-
+		let appointment_date_iso = null;
+		if (appointment_date) {
+			appointment_date_iso = new Date(appointment_date).toISOString();
+		}
 		const updatedAppointment = await prisma.appointments.update({
 			where: { id },
 			data: {
@@ -113,7 +128,7 @@ const updateAppointment = async (req, res) => {
 				klient_id,
 				mechanic_id,
 				service_request_id,
-				appointment_date,
+				appointment_date: appointment_date_iso,
 				estimated_duration,
 				status,
 				notes,
