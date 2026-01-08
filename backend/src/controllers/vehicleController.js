@@ -30,14 +30,29 @@ const createVehicle = async (req, res) => {
 
 const getVehicles = async (req, res) => {
 	try {
-		const allVehicles = await prisma.vehicle.findMany({
-			include: {
-				user: true,
-				model: { include: { brand: true } },
-				engine: true,
-			},
+		const userId = req.userId;
+
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
 		});
-		return res.status(200).json(allVehicles);
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let vehicles;
+
+		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+			vehicles = await prisma.vehicle.findMany({
+				include: { model: { include: { brand: true } }, user: true, engine: true },
+			});
+		} else {
+			vehicles = await prisma.vehicle.findMany({
+				where: { user_id: userId },
+				include: { model: { include: { brand: true } }, user: true, engine: true },
+			});
+		}
+
+		return res.status(200).json(vehicles);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: 'Błąd serwera' });
