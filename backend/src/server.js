@@ -81,7 +81,9 @@ app.use('/api', userRoutes);
 const orderStatusRoutes = require('./routes/orderStatusRoutes');
 app.use('/api', orderStatusRoutes);
 
-
+// {Estimates}
+const estimateRoutes = require('./routes/estimateRoutes');
+app.use('/api', estimateRoutes);
 
 app.listen(PORT, () => {
 	console.log(`Server Biega na tym porciku http://localhost:${PORT}`);
