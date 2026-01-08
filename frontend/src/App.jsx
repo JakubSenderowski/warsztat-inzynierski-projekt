@@ -28,6 +28,9 @@ import InvoiceEditPage from './pages/invoices/InvoicesEditPage';
 import AppointmentsPage from './pages/appointments/AppointmentsPage';
 import AppointmentAddPage from './pages/appointments/AppointmentsAddPage';
 import AppointmentEditPage from './pages/appointments/AppointmentsEditPage';
+import EstimatesPage from './pages/estimates/EstimatesPage';
+import EstimateAddPage from './pages/estimates/EstimateAddPage';
+import EstimateEditPage from './pages/estimates/EstimateEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -232,6 +235,30 @@ function App() {
 					element={
 						<RoleBasedRoute allowedRoles={['Admin']}>
 							<AppointmentEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/estimates'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<EstimatesPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/estimates/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<EstimateAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/estimates/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<EstimateEditPage />
 						</RoleBasedRoute>
 					}
 				/>

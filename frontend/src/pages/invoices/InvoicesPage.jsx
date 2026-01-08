@@ -4,7 +4,7 @@ import api from '../../api/api';
 import Layout from '../../components/Layout';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { FaFilePdf } from 'react-icons/fa';
 function InvoicesPage() {
 	const navigate = useNavigate();
 	const [invoices, setInvoices] = useState([]);
@@ -37,7 +37,30 @@ function InvoicesPage() {
 			console.log(err);
 		}
 	};
+	const handleDownloadPDF = async (invoiceId, invoiceNumber) => {
+		try {
+			console.log('Pobieram PDF dla faktury:', invoiceId);
 
+			const response = await api.get(`/api/invoices/${invoiceId}/pdf`, {
+				responseType: 'blob',
+			});
+
+			const blob = new Blob([response.data], { type: 'application/pdf' });
+			const url = window.URL.createObjectURL(blob);
+
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = `faktura-${invoiceNumber}.pdf`;
+			link.click();
+
+			window.URL.revokeObjectURL(url);
+
+			console.log('PDF pobrany!');
+		} catch (err) {
+			console.log(err);
+			alert('Błąd pobierania PDF');
+		}
+	};
 	const getStatusColor = (status) => {
 		switch (status.toLowerCase()) {
 			case 'paid':
@@ -116,6 +139,12 @@ function InvoicesPage() {
 												className='text-blue-400 hover:text-blue-300 transition-colors'
 												title='Edytuj'>
 												<MdEdit size={20} />
+											</button>
+											<button
+												onClick={() => handleDownloadPDF(invoice.id, invoice.invoice_number)}
+												className='text-green-400 hover:text-green-300 transition-colors'
+												title='Pobierz PDF'>
+												<FaFilePdf size={20} />
 											</button>
 											<button
 												onClick={() => handleDelete(invoice.id)}
