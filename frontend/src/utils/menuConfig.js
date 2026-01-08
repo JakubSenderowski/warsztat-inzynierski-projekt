@@ -9,8 +9,8 @@ import { FaCalendarAlt } from 'react-icons/fa';
 import { FaFileContract } from 'react-icons/fa';
 const menuItems = [
 	{ name: 'Dashboard', path: '/admin-dashboard', icon: MdDashboard, roles: ['Admin'] },
-	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin'] },
-	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin'] },
+	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Customer'] },
+	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin', 'Customer'] },
 	{ name: 'Cześci', path: '/parts', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Dostawcy', path: '/suppliers', icon: CiDeliveryTruck, roles: ['Admin'] },
 	{ name: 'Użytkownicy', path: '/users', icon: FaUsers, roles: ['Admin'] },

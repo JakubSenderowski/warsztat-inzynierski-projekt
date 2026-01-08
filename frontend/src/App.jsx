@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
 import DashboardPage from './pages/DashBoardPage';
 import VehiclesPage from './pages/Vehicles/VehiclesPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
@@ -36,6 +37,7 @@ function App() {
 		<BrowserRouter>
 			<Routes>
 				<Route path='/' element={<LoginPage />} />
+				<Route path='/register' element={<RegisterPage />} />
 				<Route element={<ProtectedRoutes />}>
 					<Route
 						path='/admin-dashboard'
@@ -48,7 +50,7 @@ function App() {
 					<Route
 						path='/vehicles'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<VehiclesPage />
 							</RoleBasedRoute>
 						}
@@ -56,7 +58,7 @@ function App() {
 					<Route
 						path='/vehicles-add'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<VehicleAddPage />
 							</RoleBasedRoute>
 						}
@@ -64,7 +66,7 @@ function App() {
 					<Route
 						path='/vehicles/edit/:id'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<VehiclesEditPage />
 							</RoleBasedRoute>
 						}
