@@ -47,6 +47,10 @@ import TaxRateEditPage from './pages/TaxRates/TaxRateEditPage';
 import PartCategoriesPage from './pages/PartCategories/PartCategoriesPage';
 import PartCategoryAddPage from './pages/PartCategories/PartCategoryAddPage';
 import PartCategoryEditPage from './pages/PartCategories/PartCategoryEditPage';
+import UnitsOfMeasurePage from './pages/UnitsOfMeasure/UnitsOfMeasurePage';
+import UnitOfMeasureAddPage from './pages/UnitsOfMeasure/UnitOfMeasureAddPage';
+import UnitOfMeasureEditPage from './pages/UnitsOfMeasure/UnitOfMeasureEditPage';
+
 function App() {
 	return (
 		<BrowserRouter>
@@ -396,6 +400,30 @@ function App() {
 					element={
 						<RoleBasedRoute allowedRoles={['Admin']}>
 							<PartCategoryEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/units-of-measure'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<UnitsOfMeasurePage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/units-of-measure/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<UnitOfMeasureAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/units-of-measure/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<UnitOfMeasureEditPage />
 						</RoleBasedRoute>
 					}
 				/>

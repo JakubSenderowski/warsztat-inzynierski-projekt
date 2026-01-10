@@ -11,6 +11,7 @@ import { FaCar } from 'react-icons/fa';
 import { FaCreditCard } from 'react-icons/fa';
 import { FaPercent } from 'react-icons/fa';
 import { FaBoxes } from 'react-icons/fa';
+import { FaRuler } from 'react-icons/fa';
 const menuItems = [
 	{ name: 'Dashboard', path: '/admin-dashboard', icon: MdDashboard, roles: ['Admin'] },
 	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Customer'] },
@@ -26,6 +27,7 @@ const menuItems = [
 	{ name: 'Metody płatności', path: '/payment-methods', icon: FaCreditCard, roles: ['Admin'] },
 	{ name: 'Stawki VAT', path: '/tax-rates', icon: FaPercent, roles: ['Admin'] },
 	{ name: 'Kategorie części', path: '/part-categories', icon: FaBoxes, roles: ['Admin'] },
+	{ name: 'Jednostki miary', path: '/units-of-measure', icon: FaRuler, roles: ['Admin'] },
 ];
 
 export default menuItems;
