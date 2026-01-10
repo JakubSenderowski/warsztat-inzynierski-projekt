@@ -32,6 +32,21 @@ import AppointmentEditPage from './pages/appointments/AppointmentsEditPage';
 import EstimatesPage from './pages/estimates/EstimatesPage';
 import EstimateAddPage from './pages/estimates/EstimateAddPage';
 import EstimateEditPage from './pages/estimates/EstimateEditPage';
+import BrandsPage from './pages/brands/BrandsPage';
+import BrandsAddPage from './pages/brands/BrandsAddPage';
+import BrandEditPage from './pages/brands/BrandsEditPage';
+import ModelsPage from './pages/modelsBrands/ModelsPage';
+import ModelAddPage from './pages/modelsBrands/ModelAddPage';
+import ModelEditPage from './pages/modelsBrands/ModelEditPage';
+import PaymentMethodsPage from './pages/paymentmethods/PaymentMethodsPage';
+import PaymentMethodAddPage from './pages/paymentmethods/PaymentMethodsAddPage';
+import PaymentMethodEditPage from './pages/paymentmethods/PaymentMethodsEditPage';
+import TaxRatesPage from './pages/TaxRates/TaxRatesPage';
+import TaxRateAddPage from './pages/TaxRates/TaxRateAddPage';
+import TaxRateEditPage from './pages/TaxRates/TaxRateEditPage';
+import PartCategoriesPage from './pages/PartCategories/PartCategoriesPage';
+import PartCategoryAddPage from './pages/PartCategories/PartCategoryAddPage';
+import PartCategoryEditPage from './pages/PartCategories/PartCategoryEditPage';
 function App() {
 	return (
 		<BrowserRouter>
@@ -261,6 +276,126 @@ function App() {
 					element={
 						<RoleBasedRoute allowedRoles={['Admin']}>
 							<EstimateEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/brands'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<BrandsPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/brands/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<BrandsAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/brands/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<BrandEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/models'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<ModelsPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/models/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<ModelAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/models/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<ModelEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/payment-methods'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PaymentMethodsPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/payment-methods/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PaymentMethodAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/payment-methods/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PaymentMethodEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/tax-rates'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<TaxRatesPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/tax-rates/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<TaxRateAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/tax-rates/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<TaxRateEditPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/part-categories'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PartCategoriesPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/part-categories/add'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PartCategoryAddPage />
+						</RoleBasedRoute>
+					}
+				/>
+				<Route
+					path='/part-categories/edit/:id'
+					element={
+						<RoleBasedRoute allowedRoles={['Admin']}>
+							<PartCategoryEditPage />
 						</RoleBasedRoute>
 					}
 				/>
