@@ -14,9 +14,9 @@ const menuItems = [
 	{ name: 'Cześci', path: '/parts', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Dostawcy', path: '/suppliers', icon: CiDeliveryTruck, roles: ['Admin'] },
 	{ name: 'Użytkownicy', path: '/users', icon: FaUsers, roles: ['Admin'] },
-	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin'] },
-	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin'] },
-	{ name: 'Wyceny', path: '/estimates', icon: FaFileContract, roles: ['Admin'] },
+	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin', 'Customer'] },
+	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin', 'Customer'] },
+	{ name: 'Wyceny', path: '/estimates', icon: FaFileContract, roles: ['Admin', 'Customer'] },
 ];
 
 export default menuItems;

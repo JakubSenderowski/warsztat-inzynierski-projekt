@@ -170,7 +170,7 @@ function App() {
 					<Route
 						path='/repairs'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<RepairsPage />
 							</RoleBasedRoute>
 						}
@@ -178,7 +178,7 @@ function App() {
 					<Route
 						path='/repairs/add'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<RepairAddPage />
 							</RoleBasedRoute>
 						}
@@ -186,7 +186,7 @@ function App() {
 					<Route
 						path='/repairs/edit/:id'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin']}>
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 								<RepairEditPage />
 							</RoleBasedRoute>
 						}
@@ -195,7 +195,7 @@ function App() {
 				<Route
 					path='/invoices'
 					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
+						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 							<InvoicesPage />
 						</RoleBasedRoute>
 					}
@@ -219,7 +219,7 @@ function App() {
 				<Route
 					path='/appointments'
 					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
+						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 							<AppointmentsPage />
 						</RoleBasedRoute>
 					}
@@ -227,7 +227,7 @@ function App() {
 				<Route
 					path='/appointments/add'
 					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
+						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 							<AppointmentAddPage />
 						</RoleBasedRoute>
 					}
@@ -235,7 +235,7 @@ function App() {
 				<Route
 					path='/appointments/edit/:id'
 					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
+						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 							<AppointmentEditPage />
 						</RoleBasedRoute>
 					}
@@ -243,7 +243,7 @@ function App() {
 				<Route
 					path='/estimates'
 					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
+						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
 							<EstimatesPage />
 						</RoleBasedRoute>
 					}
