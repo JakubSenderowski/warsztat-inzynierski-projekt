@@ -69,14 +69,62 @@ const createInvoice = async (req, res) => {
 
 const getInvoices = async (req, res) => {
 	try {
-		const allInvoices = await prisma.invoice.findMany({
-			include: {
-				repair_order: true,
-				klient: true,
-				payment_method: true,
-			},
+		const userId = req.userId;
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
 		});
-		return res.status(200).json(allInvoices);
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let invoices;
+
+		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+			invoices = await prisma.invoice.findMany({
+				include: {
+					klient: true,
+					repair_order: {
+						include: {
+							vehicle: {
+								include: {
+									model: {
+										include: {
+											brand: true,
+										},
+									},
+								},
+							},
+						},
+					},
+					payment_method: true,
+				},
+			});
+		} else {
+			invoices = await prisma.invoice.findMany({
+				where: {
+					klient_id: userId,
+				},
+				include: {
+					klient: true,
+					repair_order: {
+						include: {
+							vehicle: {
+								include: {
+									model: {
+										include: {
+											brand: true,
+										},
+									},
+								},
+							},
+						},
+					},
+					payment_method: true,
+				},
+			});
+		}
+
+		return res.status(200).json(invoices);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: 'Błąd serwera' });

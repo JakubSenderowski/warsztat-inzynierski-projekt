@@ -68,20 +68,52 @@ const createRepairOrder = async (req, res) => {
 
 const getRepairOrders = async (req, res) => {
 	try {
-		const allRepairOrders = await prisma.repairOrder.findMany({
-			include: {
-				vehicle: {
-					include: {
-						model: { include: { brand: true } },
-						user: true,
+		const userId = req.userId;
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
+		});
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let repairOrders;
+
+		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+			repairOrders = await prisma.repairOrder.findMany({
+				include: {
+					vehicle: {
+						include: {
+							model: { include: { brand: true } },
+							user: true,
+						},
+					},
+					status: true,
+					assigned_mechanic: true,
+					service_request: true,
+				},
+			});
+		} else {
+			repairOrders = await prisma.repairOrder.findMany({
+				where: {
+					vehicle: {
+						user_id: userId,
 					},
 				},
-				status: true,
-				assigned_mechanic: true,
-				service_request: true,
-			},
-		});
-		return res.status(200).json(allRepairOrders);
+				include: {
+					vehicle: {
+						include: {
+							model: { include: { brand: true } },
+							user: true,
+						},
+					},
+					status: true,
+					assigned_mechanic: true,
+					service_request: true,
+				},
+			});
+		}
+
+		return res.status(200).json(repairOrders);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: 'Błąd serwera' });

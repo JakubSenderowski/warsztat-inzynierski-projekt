@@ -61,23 +61,56 @@ const createAppointment = async (req, res) => {
 
 const getAppointments = async (req, res) => {
 	try {
-		const allAppointments = await prisma.appointments.findMany({
-			include: {
-				vehicle: {
-					include: {
-						model: {
-							include: {
-								brand: true,
+		const userId = req.userId;
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
+		});
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let appointments;
+
+		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+			appointments = await prisma.appointments.findMany({
+				include: {
+					vehicle: {
+						include: {
+							model: {
+								include: {
+									brand: true,
+								},
 							},
 						},
 					},
+					klient: true,
+					mechanic: true,
+					service_request: true,
 				},
-				klient: true,
-				mechanic: true,
-				service_request: true,
-			},
-		});
-		return res.status(200).json(allAppointments);
+			});
+		} else {
+			appointments = await prisma.appointments.findMany({
+				where: {
+					klient_id: userId,
+				},
+				include: {
+					vehicle: {
+						include: {
+							model: {
+								include: {
+									brand: true,
+								},
+							},
+						},
+					},
+					klient: true,
+					mechanic: true,
+					service_request: true,
+				},
+			});
+		}
+
+		return res.status(200).json(appointments);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: 'Błąd serwera' });

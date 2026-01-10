@@ -62,26 +62,62 @@ const createEstimate = async (req, res) => {
 
 const getEstimates = async (req, res) => {
 	try {
-		const allEstimates = await prisma.estimates.findMany({
-			include: {
-				vehicle: {
-					include: {
-						model: {
-							include: {
-								brand: true,
+		const userId = req.userId;
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
+		});
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let estimates;
+
+		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+			estimates = await prisma.estimates.findMany({
+				include: {
+					vehicle: {
+						include: {
+							model: {
+								include: {
+									brand: true,
+								},
 							},
 						},
 					},
+					created_by: true,
+					repair_order: true,
 				},
-				created_by: true,
-				repair_order: true,
-			},
-			orderBy: {
-				created_at: 'desc',
-			},
-		});
+				orderBy: {
+					created_at: 'desc',
+				},
+			});
+		} else {
+			estimates = await prisma.estimates.findMany({
+				where: {
+					vehicle: {
+						user_id: userId,
+					},
+				},
+				include: {
+					vehicle: {
+						include: {
+							model: {
+								include: {
+									brand: true,
+								},
+							},
+						},
+					},
+					created_by: true,
+					repair_order: true,
+				},
+				orderBy: {
+					created_at: 'desc',
+				},
+			});
+		}
 
-		return res.status(200).json(allEstimates);
+		return res.status(200).json(estimates);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: 'Błąd serwera' });
