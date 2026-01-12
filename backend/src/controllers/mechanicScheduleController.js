@@ -29,6 +29,25 @@ const getMechanicSchedules = async (req, res) => {
 	}
 };
 
+const getMechanicScheduleById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const schedule = await prisma.mechanicSchedules.findUnique({
+			where: { id },
+			include: { mechanic: true },
+		});
+
+		if (!schedule) {
+			return res.status(404).json({ error: 'Kalendarz mechanika nie istnieje' });
+		}
+
+		return res.status(200).json(schedule);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Błąd serwera' });
+	}
+};
+
 const updateMechanicSchedule = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -69,4 +88,10 @@ const deleteMechanicSchedule = async (req, res) => {
 	}
 };
 
-module.exports = { createMechanicSchedule, getMechanicSchedules, updateMechanicSchedule, deleteMechanicSchedule };
+module.exports = {
+	createMechanicSchedule,
+	getMechanicSchedules,
+	updateMechanicSchedule,
+	deleteMechanicSchedule,
+	getMechanicScheduleById,
+};
