@@ -17,14 +17,20 @@ import { FaTasks } from 'react-icons/fa';
 import { FaCog } from 'react-icons/fa';
 const menuItems = [
 	{ name: 'Dashboard', path: '/admin-dashboard', icon: MdDashboard, roles: ['Admin'] },
-	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Customer'] },
-	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin', 'Customer'] },
-	{ name: 'Cześci', path: '/parts', icon: FaTools, roles: ['Admin'] },
+
+	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Mechanic', 'Customer'] },
+	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin', 'Mechanic', 'Customer'] },
+
+	{ name: 'Części', path: '/parts', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Dostawcy', path: '/suppliers', icon: CiDeliveryTruck, roles: ['Admin'] },
 	{ name: 'Użytkownicy', path: '/users', icon: FaUsers, roles: ['Admin'] },
+
 	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin', 'Customer'] },
-	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin', 'Customer'] },
+
+	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin', 'Mechanic', 'Customer'] },
+
 	{ name: 'Wyceny', path: '/estimates', icon: FaFileContract, roles: ['Admin', 'Customer'] },
+
 	{ name: 'Marki', path: '/brands', icon: FaCar, roles: ['Admin'] },
 	{ name: 'Modele', path: '/models', icon: FaCar, roles: ['Admin'] },
 	{ name: 'Metody płatności', path: '/payment-methods', icon: FaCreditCard, roles: ['Admin'] },
@@ -33,6 +39,7 @@ const menuItems = [
 	{ name: 'Jednostki miary', path: '/units-of-measure', icon: FaRuler, roles: ['Admin'] },
 	{ name: 'Typy silników', path: '/engine-types', icon: FaGasPump, roles: ['Admin'] },
 	{ name: 'Statusy zleceń', path: '/order-statuses', icon: FaTasks, roles: ['Admin'] },
+	{ name: 'Katalog usług', path: '/service-catalog', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Ustawienia systemu', path: '/system-settings', icon: FaCog, roles: ['Admin'] },
 	{ name: 'Grafiki mechaników', path: '/mechanic-schedules', icon: FaCalendarAlt, roles: ['Admin'] },
 ];

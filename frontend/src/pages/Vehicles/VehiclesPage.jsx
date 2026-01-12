@@ -6,7 +6,11 @@ import api from '../../api/api';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../../contexts/SettingsContext';
+import { useAuth } from '../../contexts/AuthContext';
+
 function VehiclesPage() {
+	const { user } = useAuth();
+	const userRole = user?.user_roles?.[0]?.role?.name;
 	const { settings, loading } = useSettings();
 
 	if (loading) {
@@ -51,12 +55,14 @@ function VehiclesPage() {
 						<span className='text-[#AEB9E1]'>Podglądaj, zarządzaj, sprawdzaj!!</span>
 					</div>
 
-					<button
-						onClick={handleAdd}
-						className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
-						Dodaj Pojazd
-						<FaCarAlt />
-					</button>
+					{(userRole === 'Admin' || userRole === 'Customer') && (
+						<button
+							onClick={handleAdd}
+							className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
+							Dodaj Pojazd
+							<FaCarAlt />
+						</button>
+					)}
 				</div>
 
 				<div className='mt-8 bg-[#101935] rounded-xl p-4 overflow-hidden'>
