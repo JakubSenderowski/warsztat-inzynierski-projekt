@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { SettingsProvider } from './contexts/SettingsContext';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import DashboardPage from './pages/DashBoardPage';
@@ -50,385 +51,529 @@ import PartCategoryEditPage from './pages/PartCategories/PartCategoryEditPage';
 import UnitsOfMeasurePage from './pages/UnitsOfMeasure/UnitsOfMeasurePage';
 import UnitOfMeasureAddPage from './pages/UnitsOfMeasure/UnitOfMeasureAddPage';
 import UnitOfMeasureEditPage from './pages/UnitsOfMeasure/UnitOfMeasureEditPage';
-
+import EngineTypesPage from './pages/engines/EngineTypesPage';
+import EngineTypeAddPage from './pages/engines/EngineTypeAddPage';
+import EngineTypeEditPage from './pages/engines/EngineTypeEditPage';
+import OrderStatusesPage from './pages/orderstatus/OrderStatusesPage';
+import OrderStatusAddPage from './pages/orderstatus/OrderStatusAddPage';
+import OrderStatusEditPage from './pages/orderstatus/OrderStatusEditPage';
+import ServiceCatalogPage from './pages/serviceCatalog/ServiceCatalogPage';
+import ServiceCatalogAddPage from './pages/serviceCatalog/ServiceCatalogAddPage';
+import ServiceCatalogEditPage from './pages/serviceCatalog/ServiceCatalogEditPage';
+import SystemSettingsPage from './pages/systemsettings/SystemSettingsPage';
+import SystemSettingAddPage from './pages/systemsettings/SystemSettingAddPage';
+import SystemSettingEditPage from './pages/systemsettings/SystemSettingEditPage';
+import MechanicSchedulesPage from './pages/mechanicschedules/MechanicSchedulesPage';
+import MechanicScheduleAddPage from './pages/mechanicschedules/MechanicScheduleAddPage';
+import MechanicScheduleEditPage from './pages/mechanicschedules/MechanicScheduleEditPage';
 function App() {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path='/' element={<LoginPage />} />
-				<Route path='/register' element={<RegisterPage />} />
-				<Route element={<ProtectedRoutes />}>
+		<SettingsProvider>
+			<BrowserRouter>
+				<Routes>
+					<Route path='/' element={<LoginPage />} />
+					<Route path='/register' element={<RegisterPage />} />
+					<Route element={<ProtectedRoutes />}>
+						<Route
+							path='/admin-dashboard'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin']}>
+									<AdminDashboardPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/vehicles'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<VehiclesPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/vehicles-add'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<VehicleAddPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/vehicles/edit/:id'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<VehiclesEditPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/mechanic-dashboard'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Mechanik']}>
+									<MechanicDasboard />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/warehouseman-dashboard'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<WarehousemanDashboard />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/parts'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<PartsPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/parts/add'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<PartAddPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/parts/edit/:id'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<PartEditPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/customer'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<CustomerPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/suppliers'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<SuppliersPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/suppliers/add'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<SuppliersAddPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/suppliers/edit/:id'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
+									<SuppliersEditPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/users'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin']}>
+									<UsersPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/users/add'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin']}>
+									<UserAddPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/users/edit/:id'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin']}>
+									<UserEditPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/repairs'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RepairsPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/repairs/add'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RepairAddPage />
+								</RoleBasedRoute>
+							}
+						/>
+						<Route
+							path='/repairs/edit/:id'
+							element={
+								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RepairEditPage />
+								</RoleBasedRoute>
+							}
+						/>
+					</Route>
 					<Route
-						path='/admin-dashboard'
+						path='/invoices'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<InvoicesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/invoices/add'
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
-								<AdminDashboardPage />
+								<InvoiceAddPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/vehicles'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<VehiclesPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/vehicles-add'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<VehicleAddPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/vehicles/edit/:id'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<VehiclesEditPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/mechanic-dashboard'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Mechanik']}>
-								<MechanicDasboard />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/warehouseman-dashboard'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<WarehousemanDashboard />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/parts'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<PartsPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/parts/add'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<PartAddPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/parts/edit/:id'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<PartEditPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/customer'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<CustomerPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/suppliers'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<SuppliersPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/suppliers/add'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<SuppliersAddPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/suppliers/edit/:id'
-						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Magazynier']}>
-								<SuppliersEditPage />
-							</RoleBasedRoute>
-						}
-					/>
-					<Route
-						path='/users'
+						path='/invoices/edit/:id'
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
-								<UsersPage />
+								<InvoiceEditPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/users/add'
+						path='/appointments'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<AppointmentsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/appointments/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<AppointmentAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/appointments/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<AppointmentEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/estimates'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<EstimatesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/estimates/add'
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
-								<UserAddPage />
+								<EstimateAddPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/users/edit/:id'
+						path='/estimates/edit/:id'
 						element={
 							<RoleBasedRoute allowedRoles={['Admin']}>
-								<UserEditPage />
+								<EstimateEditPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/repairs'
+						path='/brands'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<RepairsPage />
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<BrandsPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/repairs/add'
+						path='/brands/add'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<RepairAddPage />
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<BrandsAddPage />
 							</RoleBasedRoute>
 						}
 					/>
 					<Route
-						path='/repairs/edit/:id'
+						path='/brands/edit/:id'
 						element={
-							<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-								<RepairEditPage />
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<BrandEditPage />
 							</RoleBasedRoute>
 						}
 					/>
-				</Route>
-				<Route
-					path='/invoices'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-							<InvoicesPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/invoices/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<InvoiceAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/invoices/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<InvoiceEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/appointments'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-							<AppointmentsPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/appointments/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-							<AppointmentAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/appointments/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-							<AppointmentEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/estimates'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-							<EstimatesPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/estimates/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<EstimateAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/estimates/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<EstimateEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/brands'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<BrandsPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/brands/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<BrandsAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/brands/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<BrandEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/models'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<ModelsPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/models/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<ModelAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/models/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<ModelEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/payment-methods'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PaymentMethodsPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/payment-methods/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PaymentMethodAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/payment-methods/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PaymentMethodEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/tax-rates'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<TaxRatesPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/tax-rates/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<TaxRateAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/tax-rates/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<TaxRateEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/part-categories'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PartCategoriesPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/part-categories/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PartCategoryAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/part-categories/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<PartCategoryEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/units-of-measure'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<UnitsOfMeasurePage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/units-of-measure/add'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<UnitOfMeasureAddPage />
-						</RoleBasedRoute>
-					}
-				/>
-				<Route
-					path='/units-of-measure/edit/:id'
-					element={
-						<RoleBasedRoute allowedRoles={['Admin']}>
-							<UnitOfMeasureEditPage />
-						</RoleBasedRoute>
-					}
-				/>
-			</Routes>
-		</BrowserRouter>
+					<Route
+						path='/models'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ModelsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/models/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ModelAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/models/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ModelEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/payment-methods'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PaymentMethodsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/payment-methods/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PaymentMethodAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/payment-methods/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PaymentMethodEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/tax-rates'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<TaxRatesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/tax-rates/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<TaxRateAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/tax-rates/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<TaxRateEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/part-categories'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PartCategoriesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/part-categories/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PartCategoryAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/part-categories/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<PartCategoryEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/units-of-measure'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<UnitsOfMeasurePage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/units-of-measure/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<UnitOfMeasureAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/units-of-measure/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<UnitOfMeasureEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/engine-types'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<EngineTypesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/engine-types/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<EngineTypeAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/engine-types/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<EngineTypeEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/order-statuses'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<OrderStatusesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/order-statuses/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<OrderStatusAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/order-statuses/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<OrderStatusEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/service-catalog'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ServiceCatalogPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/service-catalog/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ServiceCatalogAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/service-catalog/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<ServiceCatalogEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/system-settings'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<SystemSettingsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/system-settings'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<SystemSettingsPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/system-settings/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<SystemSettingAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/system-settings/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<SystemSettingEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/mechanic-schedules'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<MechanicSchedulesPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/mechanic-schedules/add'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<MechanicScheduleAddPage />
+							</RoleBasedRoute>
+						}
+					/>
+					<Route
+						path='/mechanic-schedules/edit/:id'
+						element={
+							<RoleBasedRoute allowedRoles={['Admin']}>
+								<MechanicScheduleEditPage />
+							</RoleBasedRoute>
+						}
+					/>
+				</Routes>
+			</BrowserRouter>
+		</SettingsProvider>
 	);
 }
 

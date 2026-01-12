@@ -5,7 +5,13 @@ import { MdEdit } from 'react-icons/md';
 import api from '../../api/api';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSettings } from '../../contexts/SettingsContext';
 function VehiclesPage() {
+	const { settings, loading } = useSettings();
+
+	if (loading) {
+		return <div>Loading...</div>;
+	}
 	const [vehicles, setVehicles] = useState([]);
 
 	useEffect(() => {
@@ -41,7 +47,7 @@ function VehiclesPage() {
 			<div className='px-[28px] pt-[35px]'>
 				<div className='flex items-start justify-between'>
 					<div className='flex flex-col gap-1'>
-						<span className='text-white text-3xl font-semibold'>Pojazdy</span>
+						<span className='text-white text-3xl font-semibold'>{settings.company_name || 'Pojazdy'}</span>
 						<span className='text-[#AEB9E1]'>Podglądaj, zarządzaj, sprawdzaj!!</span>
 					</div>
 
