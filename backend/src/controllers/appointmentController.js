@@ -62,6 +62,7 @@ const createAppointment = async (req, res) => {
 const getAppointments = async (req, res) => {
 	try {
 		const userId = req.userId;
+
 		const user = await prisma.user.findUnique({
 			where: { id: userId },
 			include: { user_roles: { include: { role: true } } },
@@ -71,9 +72,12 @@ const getAppointments = async (req, res) => {
 
 		let appointments;
 
-		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+		if (userRole === 'Mechanic' || userRole === 'Mechanik') {
 			appointments = await prisma.appointments.findMany({
+				where: { mechanic_id: userId },
 				include: {
+					klient: true,
+					mechanic: true,
 					vehicle: {
 						include: {
 							model: {
@@ -83,17 +87,34 @@ const getAppointments = async (req, res) => {
 							},
 						},
 					},
-					klient: true,
-					mechanic: true,
 					service_request: true,
 				},
+				orderBy: { appointment_date: 'desc' },
+			});
+		} else if (userRole === 'Customer' || userRole === 'Klient') {
+			appointments = await prisma.appointments.findMany({
+				where: { klient_id: userId },
+				include: {
+					klient: true,
+					mechanic: true,
+					vehicle: {
+						include: {
+							model: {
+								include: {
+									brand: true,
+								},
+							},
+						},
+					},
+					service_request: true,
+				},
+				orderBy: { appointment_date: 'desc' },
 			});
 		} else {
 			appointments = await prisma.appointments.findMany({
-				where: {
-					klient_id: userId,
-				},
 				include: {
+					klient: true,
+					mechanic: true,
 					vehicle: {
 						include: {
 							model: {
@@ -103,10 +124,9 @@ const getAppointments = async (req, res) => {
 							},
 						},
 					},
-					klient: true,
-					mechanic: true,
 					service_request: true,
 				},
+				orderBy: { appointment_date: 'desc' },
 			});
 		}
 

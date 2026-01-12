@@ -41,14 +41,46 @@ const getVehicles = async (req, res) => {
 
 		let vehicles;
 
-		if (userRole === 'Admin' || userRole === 'Mechanik' || userRole === 'Magazynier') {
+		if (userRole === 'Admin' || userRole === 'Mechanic' || userRole === 'Mechanik') {
 			vehicles = await prisma.vehicle.findMany({
-				include: { model: { include: { brand: true } }, user: true, engine: true },
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+					user: true,
+					engine: true,
+				},
+				orderBy: { created_at: 'desc' },
+			});
+		} else if (userRole === 'Customer' || userRole === 'Klient') {
+			vehicles = await prisma.vehicle.findMany({
+				where: { user_id: userId },
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+					user: true,
+					engine: true,
+				},
+				orderBy: { created_at: 'desc' },
 			});
 		} else {
 			vehicles = await prisma.vehicle.findMany({
 				where: { user_id: userId },
-				include: { model: { include: { brand: true } }, user: true, engine: true },
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+					user: true,
+					engine: true,
+				},
+				orderBy: { created_at: 'desc' },
 			});
 		}
 
