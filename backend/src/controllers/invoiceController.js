@@ -274,8 +274,6 @@ const generateInvoicePDF = async (req, res) => {
 			res.send(pdfBuffer);
 		});
 
-		console.log('Dokument PDF utworzony, zaczynam layout...');
-
 		doc.fontSize(24).text('WARSZTAT SAMOCHODOWY', 50, 50, { align: 'center' });
 
 		doc.fontSize(10)

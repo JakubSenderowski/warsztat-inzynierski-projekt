@@ -68,64 +68,44 @@ const getAppointments = async (req, res) => {
 			include: { user_roles: { include: { role: true } } },
 		});
 
+		if (!user) {
+			return res.status(404).json({ error: 'Użytkownik nie istnieje' });
+		}
+
 		const userRole = user.user_roles[0]?.role?.name;
 
 		let appointments;
 
-		if (userRole === 'Mechanic' || userRole === 'Mechanik') {
+		const commonInclude = {
+			klient: true,
+			mechanic: true,
+			vehicle: {
+				include: {
+					model: {
+						include: {
+							brand: true,
+						},
+					},
+				},
+			},
+			service_request: true,
+		};
+
+		if (userRole === 'Mechanik') {
 			appointments = await prisma.appointments.findMany({
 				where: { mechanic_id: userId },
-				include: {
-					klient: true,
-					mechanic: true,
-					vehicle: {
-						include: {
-							model: {
-								include: {
-									brand: true,
-								},
-							},
-						},
-					},
-					service_request: true,
-				},
+				include: commonInclude,
 				orderBy: { appointment_date: 'desc' },
 			});
-		} else if (userRole === 'Customer' || userRole === 'Klient') {
+		} else if (userRole === 'Klient') {
 			appointments = await prisma.appointments.findMany({
 				where: { klient_id: userId },
-				include: {
-					klient: true,
-					mechanic: true,
-					vehicle: {
-						include: {
-							model: {
-								include: {
-									brand: true,
-								},
-							},
-						},
-					},
-					service_request: true,
-				},
+				include: commonInclude,
 				orderBy: { appointment_date: 'desc' },
 			});
 		} else {
 			appointments = await prisma.appointments.findMany({
-				include: {
-					klient: true,
-					mechanic: true,
-					vehicle: {
-						include: {
-							model: {
-								include: {
-									brand: true,
-								},
-							},
-						},
-					},
-					service_request: true,
-				},
+				include: commonInclude,
 				orderBy: { appointment_date: 'desc' },
 			});
 		}
@@ -137,6 +117,37 @@ const getAppointments = async (req, res) => {
 	}
 };
 
+const getAppointmentById = async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const appointment = await prisma.appointments.findUnique({
+			where: { id },
+			include: {
+				klient: true,
+				mechanic: true,
+				vehicle: {
+					include: {
+						model: {
+							include: {
+								brand: true,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		if (!appointment) {
+			return res.status(404).json({ error: 'Wizyta nie znaleziona' });
+		}
+
+		return res.status(200).json(appointment);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Błąd serwera' });
+	}
+};
 const updateAppointment = async (req, res) => {
 	try {
 		const { id } = req.params;
@@ -213,4 +224,4 @@ const deleteAppointment = async (req, res) => {
 	}
 };
 
-module.exports = { createAppointment, getAppointments, updateAppointment, deleteAppointment };
+module.exports = { createAppointment, getAppointments, updateAppointment, deleteAppointment, getAppointmentById };

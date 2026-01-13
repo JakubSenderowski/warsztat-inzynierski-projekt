@@ -7,10 +7,12 @@ const {
 	getAppointments,
 	updateAppointment,
 	deleteAppointment,
+	getAppointmentById,
 } = require('../controllers/appointmentController');
 
 router.post('/appointments', verifyToken, createAppointment);
 router.get('/appointments', verifyToken, getAppointments);
+router.get('/appointments/:id', verifyToken, getAppointmentById);
 router.put('/appointments/:id', verifyToken, updateAppointment);
 router.delete('/appointments/:id', verifyToken, deleteAppointment);
 

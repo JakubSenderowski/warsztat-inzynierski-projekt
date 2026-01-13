@@ -67,46 +67,62 @@ const createRepairOrder = async (req, res) => {
 };
 
 const getRepairOrders = async (req, res) => {
-	const userId = req.userId;
+	try {
+		const userId = req.userId;
 
-	const user = await prisma.user.findUnique({
-		where: { id: userId },
-		include: { user_roles: { include: { role: true } } },
-	});
-
-	const userRole = user.user_roles[0]?.role?.name;
-
-	let repairOrders;
-
-	if (userRole === 'Mechanic' || userRole === 'Mechanik') {
-		repairOrders = await prisma.repairOrder.findMany({
-			where: { assigned_mechanic_id: userId },
-			include: {
-				vehicle: { include: { model: { include: { brand: true } } } },
-				status: true,
-				assigned_mechanic: true,
-			},
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
 		});
-	} else if (userRole === 'Customer' || userRole === 'Klient') {
-		repairOrders = await prisma.repairOrder.findMany({
-			where: { vehicle: { user_id: userId } },
-			include: {
-				vehicle: { include: { model: { include: { brand: true } } } },
-				status: true,
-				assigned_mechanic: true,
+
+		if (!user) {
+			return res.status(404).json({ error: 'Użytkownik nie istnieje' });
+		}
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		let repairOrders;
+
+		const commonInclude = {
+			vehicle: {
+				include: {
+					model: { include: { brand: true } },
+					user: true,
+				},
 			},
-		});
-	} else {
-		repairOrders = await prisma.repairOrder.findMany({
-			include: {
-				vehicle: { include: { model: { include: { brand: true } } } },
-				status: true,
-				assigned_mechanic: true,
-			},
-		});
+			status: true,
+			assigned_mechanic: true,
+		};
+
+		// MECHANIK - tylko jego naprawy
+		if (userRole === 'Mechanik') {
+			repairOrders = await prisma.repairOrder.findMany({
+				where: { assigned_mechanic_id: userId },
+				include: commonInclude,
+				orderBy: { created_at: 'desc' },
+			});
+		} else if (userRole === 'Klient') {
+			repairOrders = await prisma.repairOrder.findMany({
+				where: {
+					vehicle: {
+						user_id: userId,
+					},
+				},
+				include: commonInclude,
+				orderBy: { created_at: 'desc' },
+			});
+		} else {
+			repairOrders = await prisma.repairOrder.findMany({
+				include: commonInclude,
+				orderBy: { created_at: 'desc' },
+			});
+		}
+
+		return res.status(200).json(repairOrders);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Błąd serwera podczas pobierania napraw' });
 	}
-
-	return res.status(200).json(repairOrders);
 };
 
 const updateRepairOrder = async (req, res) => {

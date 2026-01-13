@@ -12,12 +12,12 @@ const register = async (req, res) => {
 
 		const password_hash = await bcrypt.hash(password, 10);
 		const createUser = await prisma.user.create({ data: { email, password_hash, first_name, last_name, phone } });
-		const findCustomerRole = await prisma.role.findUnique({ where: { name: 'Customer' } });
-		if (!findCustomerRole) return res.status(500).json({ error: "Rola 'Customer' nie istnieje!" });
+		const findKlientRole = await prisma.role.findUnique({ where: { name: 'Klient' } });
+		if (!findKlientRole) return res.status(500).json({ error: "Rola 'Klient' nie istnieje!" });
 		await prisma.userRole.create({
 			data: {
 				user_id: createUser.id,
-				role_id: findCustomerRole.id,
+				role_id: findKlientRole.id,
 			},
 		});
 		return res.status(201).json({
@@ -86,6 +86,13 @@ const getMe = async (req, res) => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: { id: req.userId },
+			include: {
+				user_roles: {
+					include: {
+						role: true,
+					},
+				},
+			},
 		});
 
 		if (!user) {
@@ -99,9 +106,11 @@ const getMe = async (req, res) => {
 				first_name: user.first_name,
 				last_name: user.last_name,
 				is_active: user.is_active,
+				user_roles: user.user_roles,
 			},
 		});
 	} catch (err) {
+		console.error(err);
 		return res.status(500).json({ error: 'Error servera' });
 	}
 };
