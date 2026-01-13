@@ -81,6 +81,7 @@ function AppointmentsPage() {
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Pojazd</th>
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Klient</th>
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Mechanik</th>
+								<th className='px-4 py-3 text-left text-sm text-white/60'>Mechanik</th>
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Czas trwania</th>
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Status</th>
 								<th className='px-4 py-3 text-left text-sm text-white/60'>Notatki</th>

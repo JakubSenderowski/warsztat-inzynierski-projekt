@@ -8,7 +8,7 @@ import VehiclesPage from './pages/Vehicles/VehiclesPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import MechanicDasboard from './pages/MechanicDashboard';
 import WarehousemanDashboard from './pages/WarehousemanDashboard';
-import CustomerPage from './pages/CustomerPage';
+import KlientPage from './pages/KlientPage';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import RoleBasedRoute from './utils/RoleBasedRoute';
 import VehicleAddPage from './pages/Vehicles/VehicleAddPage';
@@ -87,7 +87,7 @@ function App() {
 							<Route
 								path='/vehicles'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Mechanic', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 										<VehiclesPage />
 									</RoleBasedRoute>
 								}
@@ -95,7 +95,7 @@ function App() {
 							<Route
 								path='/vehicles-add'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
 										<VehicleAddPage />
 									</RoleBasedRoute>
 								}
@@ -103,7 +103,7 @@ function App() {
 							<Route
 								path='/vehicles/edit/:id'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
 										<VehiclesEditPage />
 									</RoleBasedRoute>
 								}
@@ -149,10 +149,10 @@ function App() {
 								}
 							/>
 							<Route
-								path='/customer'
+								path='/Klient'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
-										<CustomerPage />
+									<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
+										<KlientPage />
 									</RoleBasedRoute>
 								}
 							/>
@@ -207,7 +207,7 @@ function App() {
 							<Route
 								path='/repairs'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Mechanic', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 										<RepairsPage />
 									</RoleBasedRoute>
 								}
@@ -215,7 +215,7 @@ function App() {
 							<Route
 								path='/repairs/add'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Mechanic', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 										<RepairAddPage />
 									</RoleBasedRoute>
 								}
@@ -223,7 +223,7 @@ function App() {
 							<Route
 								path='/repairs/edit/:id'
 								element={
-									<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+									<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 										<RepairEditPage />
 									</RoleBasedRoute>
 								}
@@ -232,7 +232,7 @@ function App() {
 						<Route
 							path='/invoices'
 							element={
-								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
 									<InvoicesPage />
 								</RoleBasedRoute>
 							}
@@ -256,7 +256,7 @@ function App() {
 						<Route
 							path='/appointments'
 							element={
-								<RoleBasedRoute allowedRoles={['Admin', 'Mechanic', 'Customer']}>
+								<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 									<AppointmentsPage />
 								</RoleBasedRoute>
 							}
@@ -264,7 +264,7 @@ function App() {
 						<Route
 							path='/appointments/add'
 							element={
-								<RoleBasedRoute allowedRoles={['Admin', 'Mechanic', 'Customer']}>
+								<RoleBasedRoute allowedRoles={['Admin', 'Mechanik', 'Klient']}>
 									<AppointmentAddPage />
 								</RoleBasedRoute>
 							}
@@ -272,7 +272,7 @@ function App() {
 						<Route
 							path='/appointments/edit/:id'
 							element={
-								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
 									<AppointmentEditPage />
 								</RoleBasedRoute>
 							}
@@ -280,7 +280,7 @@ function App() {
 						<Route
 							path='/estimates'
 							element={
-								<RoleBasedRoute allowedRoles={['Admin', 'Customer']}>
+								<RoleBasedRoute allowedRoles={['Admin', 'Klient']}>
 									<EstimatesPage />
 								</RoleBasedRoute>
 							}

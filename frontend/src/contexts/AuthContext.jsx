@@ -10,25 +10,31 @@ export const AuthProvider = ({ children }) => {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
+				const token = localStorage.getItem('accessToken');
+
+				if (!token) {
+					setLoading(false);
+					return;
+				}
+
 				const response = await api.get('/api/auth/me');
+				console.log('AUTH CONTEXT - RESPONSE:', response.data); // ← DODAJ!
+				console.log('AUTH CONTEXT - USER_ROLES:', response.data.user?.user_roles); // ← DODAJ!
+
 				setUser(response.data.user);
 				setLoading(false);
 			} catch (err) {
-				console.log(err);
+				console.log('AUTH CONTEXT - ERROR:', err);
 				setLoading(false);
 			}
 		};
 
-		const token = localStorage.getItem('token');
-		if (token) {
-			fetchUser();
-		} else {
-			setLoading(false);
-		}
+		fetchUser();
 	}, []);
 
 	const logout = () => {
-		localStorage.removeItem('token');
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
 		setUser(null);
 	};
 
@@ -38,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
 	const context = useContext(AuthContext);
 	if (!context) {
-		throw new Error('useAuth must be used within AuthProvider');
+		throw new Error('useAuth musi być użyty z  AuthProvider');
 	}
 	return context;
 };

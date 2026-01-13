@@ -1,7 +1,7 @@
 import Layout from '../components/Layout';
 
-function CustomerPage() {
+function KlientPage() {
 	return <Layout></Layout>;
 }
 
-export default CustomerPage;
+export default KlientPage;

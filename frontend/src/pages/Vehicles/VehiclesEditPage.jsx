@@ -25,14 +25,26 @@ function VehicleEditPage() {
 	});
 
 	useEffect(() => {
-		const fetchVehicle = async () => {
+		const fetchInitialData = async () => {
+			try {
+				const [brandsRes, enginesRes] = await Promise.all([
+					api.get('/api/vehicles/brands'),
+					api.get('/api/vehicles/engines'),
+				]);
+				setBrands(brandsRes.data);
+				setEngines(enginesRes.data);
+			} catch (err) {
+				console.log('Błąd ładowania list:', err);
+			}
+		};
+		fetchInitialData();
+	}, []);
+
+	useEffect(() => {
+		const fetchVehicleAndModels = async () => {
 			try {
 				const response = await api.get(`/api/vehicles/${id}`);
 				const vehicle = response.data;
-
-				setSelectedBrandId(vehicle.model.brand.id);
-				setSelectedModelId(vehicle.model.id);
-				setSelectedEngineId(vehicle.engine.id);
 
 				setFormData({
 					vin: vehicle.vin,
@@ -41,59 +53,39 @@ function VehicleEditPage() {
 					mileage: vehicle.mileage.toString(),
 					color: vehicle.color || '',
 				});
+
+				setSelectedBrandId(vehicle.model.brand.id);
+				setSelectedEngineId(vehicle.engine.id);
+
+				const modelsRes = await api.get(`/api/vehicles/models?brand_id=${vehicle.model.brand.id}`);
+				setModels(modelsRes.data);
+
+				setSelectedModelId(vehicle.model.id);
 			} catch (err) {
-				console.log(err);
+				console.log('Błąd ładowania pojazdu:', err);
 			}
 		};
 
 		if (id) {
-			fetchVehicle();
+			fetchVehicleAndModels();
 		}
 	}, [id]);
 
-	useEffect(() => {
-		const fetchBrands = async () => {
-			try {
-				const response = await api.get('/api/vehicles/brands');
-				setBrands(response.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		fetchBrands();
-	}, []);
+	const handleBrandChange = async (e) => {
+		const brandId = e.target.value;
+		setSelectedBrandId(brandId);
+		setSelectedModelId('');
 
-	useEffect(() => {
-		const fetchEngines = async () => {
+		if (brandId) {
 			try {
-				const response = await api.get('/api/vehicles/engines');
-				setEngines(response.data);
-			} catch (err) {
-				console.log(err);
-			}
-		};
-		fetchEngines();
-	}, []);
-
-	useEffect(() => {
-		const fetchModels = async () => {
-			try {
-				const response = await api.get(`/api/vehicles/models?brand_id=${selectedBrandId}`);
+				const response = await api.get(`/api/vehicles/models?brand_id=${brandId}`);
 				setModels(response.data);
 			} catch (err) {
 				console.log(err);
 			}
-		};
-
-		if (selectedBrandId) {
-			fetchModels();
+		} else {
+			setModels([]);
 		}
-	}, [selectedBrandId]);
-
-	const handleBrandChange = (e) => {
-		setSelectedBrandId(e.target.value);
-		setModels([]);
-		setSelectedModelId('');
 	};
 
 	const handleInputChange = (e) => {
@@ -117,7 +109,6 @@ function VehicleEditPage() {
 			await api.put(`/api/vehicles/${id}`, data);
 			navigate('/vehicles');
 		} catch (err) {
-			console.log(err);
 			console.log('ERROR RESPONSE:', err.response?.data);
 		}
 	};
@@ -146,7 +137,6 @@ function VehicleEditPage() {
 								))}
 							</select>
 						</div>
-
 						<div>
 							<label className='block text-sm text-white/70 mb-1'>Wybierz model pojazdu</label>
 							<select
@@ -185,8 +175,7 @@ function VehicleEditPage() {
 								value={formData.vin}
 								onChange={handleInputChange}
 								type='text'
-								placeholder='17 cyfr'
-								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500 transition'
+								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 transition'
 							/>
 						</div>
 
@@ -197,8 +186,7 @@ function VehicleEditPage() {
 								value={formData.registration_number}
 								onChange={handleInputChange}
 								type='text'
-								placeholder='np. TST 23232'
-								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500 transition'
+								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 transition'
 							/>
 						</div>
 
@@ -209,8 +197,7 @@ function VehicleEditPage() {
 								value={formData.production_year}
 								onChange={handleInputChange}
 								type='text'
-								placeholder='np. 2025'
-								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500 transition'
+								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 transition'
 							/>
 						</div>
 
@@ -221,8 +208,7 @@ function VehicleEditPage() {
 								value={formData.mileage}
 								onChange={handleInputChange}
 								type='text'
-								placeholder='np. 2323'
-								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500 transition'
+								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 transition'
 							/>
 						</div>
 
@@ -233,8 +219,7 @@ function VehicleEditPage() {
 								value={formData.color}
 								onChange={handleInputChange}
 								type='text'
-								placeholder='np. Fioletowy'
-								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500 transition'
+								className='w-full bg-[#0B122B] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500 transition'
 							/>
 						</div>
 

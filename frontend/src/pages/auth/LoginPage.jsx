@@ -17,7 +17,7 @@ function LoginPage() {
 				const { user, accessToken, refreshToken } = response.data;
 				localStorage.setItem('accessToken', accessToken);
 				localStorage.setItem('refreshToken', refreshToken);
-				localStorage.setItem('role', user.role || 'Customer');
+				localStorage.setItem('role', user.role || 'Klient');
 
 				const role = response.data.user.role;
 				if (role === 'Admin') {
@@ -27,7 +27,7 @@ function LoginPage() {
 				} else if (role === 'Magazynier') {
 					navigate('/warehouseman-dashboard');
 				} else {
-					navigate('/customer');
+					navigate('/vehicles');
 				}
 			})
 			.catch(function (error) {

@@ -10,12 +10,12 @@ import { useAuth } from '../../contexts/AuthContext';
 
 function VehiclesPage() {
 	const { user } = useAuth();
-	const userRole = user?.user_roles?.[0]?.role?.name;
 	const { settings, loading } = useSettings();
 
 	if (loading) {
-		return <div>Loading...</div>;
+		return <div className='text-white p-10'>Ładowanie danych użytkownika...</div>;
 	}
+	const userRole = user?.user_roles?.[0]?.role?.name;
 	const [vehicles, setVehicles] = useState([]);
 
 	useEffect(() => {
@@ -46,6 +46,7 @@ function VehiclesPage() {
 			console.log(err);
 		}
 	};
+
 	return (
 		<Layout>
 			<div className='px-[28px] pt-[35px]'>
@@ -54,8 +55,7 @@ function VehiclesPage() {
 						<span className='text-white text-3xl font-semibold'>{settings.company_name || 'Pojazdy'}</span>
 						<span className='text-[#AEB9E1]'>Podglądaj, zarządzaj, sprawdzaj!!</span>
 					</div>
-
-					{(userRole === 'Admin' || userRole === 'Customer') && (
+					{(userRole === 'Admin' || userRole === 'Klient') && (
 						<button
 							onClick={handleAdd}
 							className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>

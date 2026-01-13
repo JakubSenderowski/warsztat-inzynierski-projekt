@@ -18,18 +18,18 @@ import { FaCog } from 'react-icons/fa';
 const menuItems = [
 	{ name: 'Dashboard', path: '/admin-dashboard', icon: MdDashboard, roles: ['Admin'] },
 
-	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Mechanic', 'Customer'] },
-	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin', 'Mechanic', 'Customer'] },
+	{ name: 'Pojazdy', path: '/vehicles', icon: FaCarSide, roles: ['Admin', 'Mechanik', 'Klient'] },
+	{ name: 'Naprawy', path: '/repairs', icon: MdHomeRepairService, roles: ['Admin', 'Mechanik', 'Klient'] },
 
 	{ name: 'Części', path: '/parts', icon: FaTools, roles: ['Admin'] },
 	{ name: 'Dostawcy', path: '/suppliers', icon: CiDeliveryTruck, roles: ['Admin'] },
 	{ name: 'Użytkownicy', path: '/users', icon: FaUsers, roles: ['Admin'] },
 
-	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin', 'Customer'] },
+	{ name: 'Faktury', path: '/invoices', icon: FaFileInvoiceDollar, roles: ['Admin', 'Klient'] },
 
-	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin', 'Mechanic', 'Customer'] },
+	{ name: 'Wizyty', path: '/appointments', icon: FaCalendarAlt, roles: ['Admin', 'Mechanik', 'Klient'] },
 
-	{ name: 'Wyceny', path: '/estimates', icon: FaFileContract, roles: ['Admin', 'Customer'] },
+	{ name: 'Wyceny', path: '/estimates', icon: FaFileContract, roles: ['Admin', 'Klient'] },
 
 	{ name: 'Marki', path: '/brands', icon: FaCar, roles: ['Admin'] },
 	{ name: 'Modele', path: '/models', icon: FaCar, roles: ['Admin'] },

@@ -39,8 +39,6 @@ function InvoicesPage() {
 	};
 	const handleDownloadPDF = async (invoiceId, invoiceNumber) => {
 		try {
-			console.log('Pobieram PDF dla faktury:', invoiceId);
-
 			const response = await api.get(`/api/invoices/${invoiceId}/pdf`, {
 				responseType: 'blob',
 			});
@@ -54,8 +52,6 @@ function InvoicesPage() {
 			link.click();
 
 			window.URL.revokeObjectURL(url);
-
-			console.log('PDF pobrany!');
 		} catch (err) {
 			console.log(err);
 			alert('Błąd pobierania PDF');

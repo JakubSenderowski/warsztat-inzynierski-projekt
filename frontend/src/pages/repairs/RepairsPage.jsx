@@ -4,8 +4,17 @@ import api from '../../api/api';
 import Layout from '../../components/Layout';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { useSettings } from '../../contexts/SettingsContext';
+import { useAuth } from '../../contexts/AuthContext';
 function RepairsPage() {
+	const { user } = useAuth();
+	const { settings, loading } = useSettings();
+
+	if (loading) {
+		return <div className='text-white p-10'>Ładowanie danych użytkownika...</div>;
+	}
+	const userRole = user?.user_roles?.[0]?.role?.name;
+
 	const navigate = useNavigate();
 	const [repairs, setRepairs] = useState([]);
 
@@ -46,12 +55,14 @@ function RepairsPage() {
 						<span className='text-white text-3xl font-semibold'>Naprawy</span>
 						<span className='text-[#AEB9E1]'>Zarządzaj zleceniami napraw</span>
 					</div>
-					<button
-						onClick={handleAdd}
-						className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
-						Dodaj naprawę
-						<FaTools />
-					</button>
+					{userRole === 'Admin' && (
+						<button
+							onClick={handleAdd}
+							className='bg-[#CB3CFF] text-white rounded-md px-4 py-2 font-medium flex items-center gap-2'>
+							Dodaj naprawę
+							<FaTools />
+						</button>
+					)}
 				</div>
 
 				<div className='mt-8 bg-[#101935] rounded-xl p-4 overflow-x-auto'>
@@ -118,12 +129,14 @@ function RepairsPage() {
 												title='Edytuj'>
 												<MdEdit size={20} />
 											</button>
-											<button
-												onClick={() => handleDelete(repair.id)}
-												className='text-red-400 hover:text-red-300 transition-colors'
-												title='Usuń'>
-												<MdDelete size={20} />
-											</button>
+											{userRole === 'Admin' && (
+												<button
+													onClick={() => handleDelete(repair.id)}
+													className='text-red-400 hover:text-red-300 transition-colors'
+													title='Usuń'>
+													<MdDelete size={20} />
+												</button>
+											)}
 										</div>
 									</td>
 								</tr>
