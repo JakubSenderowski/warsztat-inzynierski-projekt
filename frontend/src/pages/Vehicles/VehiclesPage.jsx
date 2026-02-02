@@ -16,6 +16,7 @@ function VehiclesPage() {
 		return <div className='text-white p-10'>Ładowanie danych użytkownika...</div>;
 	}
 	const userRole = user?.user_roles?.[0]?.role?.name;
+	console.log('User role:', userRole);
 	const [vehicles, setVehicles] = useState([]);
 
 	useEffect(() => {

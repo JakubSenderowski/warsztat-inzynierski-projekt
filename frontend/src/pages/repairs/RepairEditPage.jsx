@@ -1,5 +1,6 @@
 import Layout from '../../components/Layout';
 import { IoIosSave } from 'react-icons/io';
+import { MdDelete, MdAdd } from 'react-icons/md';
 import { useState, useEffect } from 'react';
 import api from '../../api/api';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +12,8 @@ function RepairEditPage() {
 	const [vehicles, setVehicles] = useState([]);
 	const [mechanics, setMechanics] = useState([]);
 	const [statuses, setStatuses] = useState([]);
+	const [availableParts, setAvailableParts] = useState([]);
+	const [usedParts, setUsedParts] = useState([]);
 
 	const [selectedVehicleId, setSelectedVehicleId] = useState('');
 	const [selectedMechanicId, setSelectedMechanicId] = useState('');
@@ -20,6 +23,13 @@ function RepairEditPage() {
 		description: '',
 		estimated_completion: '',
 		notes: '',
+	});
+
+	// Nowa część do dodania
+	const [newPart, setNewPart] = useState({
+		part_id: '',
+		quantity: 1,
+		discount: 0,
 	});
 
 	useEffect(() => {
@@ -43,6 +53,10 @@ function RepairEditPage() {
 					estimated_completion: estimatedCompletionFormatted,
 					notes: repair.notes || '',
 				});
+
+				if (repair.order_part_item) {
+					setUsedParts(repair.order_part_item);
+				}
 			} catch (err) {
 				console.log(err);
 			}
@@ -90,9 +104,63 @@ function RepairEditPage() {
 		fetchStatuses();
 	}, []);
 
+	useEffect(() => {
+		const fetchParts = async () => {
+			try {
+				const response = await api.get('/api/parts');
+				setAvailableParts(response.data);
+			} catch (err) {
+				console.log(err);
+			}
+		};
+		fetchParts();
+	}, []);
+
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		setFormData({ ...formData, [name]: value });
+	};
+
+	const handleAddPart = async () => {
+		if (!newPart.part_id) {
+			alert('Wybierz część!');
+			return;
+		}
+
+		const selectedPart = availableParts.find((p) => p.id === newPart.part_id);
+		if (!selectedPart) return;
+
+		try {
+			const partData = {
+				repair_order_id: id,
+				part_name: selectedPart.name,
+				part_number: selectedPart.part_number,
+				quantity: parseFloat(newPart.quantity),
+				unit_price: parseFloat(selectedPart.selling_price || selectedPart.unit_price),
+				discount: parseFloat(newPart.discount || 0),
+			};
+
+			const response = await api.post('/api/order-part-items', partData);
+			setUsedParts([...usedParts, response.data]);
+
+			// Reset formularza
+			setNewPart({ part_id: '', quantity: 1, discount: 0 });
+		} catch (err) {
+			console.log(err);
+			alert('Błąd przy dodawaniu części');
+		}
+	};
+
+	const handleDeletePart = async (partItemId) => {
+		if (!window.confirm('Usunąć tę część?')) return;
+
+		try {
+			await api.delete(`/api/order-part-items/${partItemId}`);
+			setUsedParts(usedParts.filter((p) => p.id !== partItemId));
+		} catch (err) {
+			console.log(err);
+			alert('Błąd przy usuwaniu części');
+		}
 	};
 
 	const handleSubmit = async (e) => {
@@ -208,9 +276,92 @@ function RepairEditPage() {
 							/>
 						</div>
 
+						<div className='border-t border-white/10 pt-4 mt-6'>
+							<h3 className='text-lg text-white font-medium mb-4'>Użyte części</h3>
+
+							{usedParts.length > 0 && (
+								<div className='mb-4 space-y-2'>
+									{usedParts.map((part) => (
+										<div
+											key={part.id}
+											className='flex items-center justify-between bg-[#0B122B] rounded-lg p-3'>
+											<div className='flex-1'>
+												<p className='text-white font-medium'>{part.part_name}</p>
+												<p className='text-white/60 text-sm'>
+													{part.part_number} | Ilość: {part.quantity} | Cena:{' '}
+													{parseFloat(part.unit_price).toFixed(2)} zł
+													{part.discount > 0 &&
+														` | Rabat: ${parseFloat(part.discount).toFixed(2)} zł`}
+												</p>
+												<p className='text-white/80 text-sm font-medium'>
+													Razem: {parseFloat(part.total_price).toFixed(2)} zł
+												</p>
+											</div>
+											<button
+												type='button'
+												onClick={() => handleDeletePart(part.id)}
+												className='text-red-400 hover:text-red-300 ml-3'>
+												<MdDelete size={20} />
+											</button>
+										</div>
+									))}
+								</div>
+							)}
+
+							<div className='bg-[#0B122B] rounded-lg p-4 space-y-3'>
+								<p className='text-white/70 text-sm mb-2'>Dodaj nową część</p>
+
+								<select
+									value={newPart.part_id}
+									onChange={(e) => setNewPart({ ...newPart, part_id: e.target.value })}
+									className='w-full bg-[#101935] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500'>
+									<option value=''>Wybierz część</option>
+									{availableParts.map((part) => (
+										<option key={part.id} value={part.id}>
+											{part.name} ({part.part_number}) -{' '}
+											{parseFloat(part.selling_price || part.unit_price).toFixed(2)} zł
+										</option>
+									))}
+								</select>
+
+								<div className='grid grid-cols-2 gap-3'>
+									<div>
+										<label className='block text-sm text-white/60 mb-1'>Ilość</label>
+										<input
+											type='number'
+											min='1'
+											step='0.01'
+											value={newPart.quantity}
+											onChange={(e) => setNewPart({ ...newPart, quantity: e.target.value })}
+											className='w-full bg-[#101935] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500'
+										/>
+									</div>
+									<div>
+										<label className='block text-sm text-white/60 mb-1'>Rabat (zł)</label>
+										<input
+											type='number'
+											min='0'
+											step='0.01'
+											value={newPart.discount}
+											onChange={(e) => setNewPart({ ...newPart, discount: e.target.value })}
+											className='w-full bg-[#101935] border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-indigo-500'
+										/>
+									</div>
+								</div>
+
+								<button
+									type='button'
+									onClick={handleAddPart}
+									className='w-full flex items-center justify-center gap-2 bg-[#CB3CFF] text-white px-4 py-2 rounded-lg hover:bg-[#b534e6] transition'>
+									<MdAdd size={20} />
+									Dodaj część
+								</button>
+							</div>
+						</div>
+
 						<button
 							type='submit'
-							className='w-full flex items-center justify-center gap-2 bg-[#FDB52A] text-black px-6 py-3 rounded-lg hover:bg-[#e6a823] transition font-medium'>
+							className='w-full flex items-center justify-center gap-2 bg-[#FDB52A] text-black px-6 py-3 rounded-lg hover:bg-[#e6a823] transition font-medium mt-6'>
 							Zapisz zmiany <IoIosSave size={18} />
 						</button>
 					</form>
