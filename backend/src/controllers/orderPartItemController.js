@@ -74,4 +74,20 @@ const deletePartItem = async (req, res) => {
 	}
 };
 
-module.exports = { createPartItem, getPartItems, updatePartItem, deletePartItem };
+const getPartItemsByRepairOrder = async (req, res) => {
+	try {
+		const { repair_order_id } = req.params;
+
+		const partItems = await prisma.orderPartItem.findMany({
+			where: { repair_order_id },
+			orderBy: { created_at: 'desc' },
+		});
+
+		return res.status(200).json(partItems);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Błąd serwera' });
+	}
+};
+
+module.exports = { createPartItem, getPartItems, getPartItemsByRepairOrder, updatePartItem, deletePartItem };

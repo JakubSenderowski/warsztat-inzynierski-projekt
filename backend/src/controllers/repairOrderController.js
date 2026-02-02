@@ -210,9 +210,60 @@ const deleteRepairOrder = async (req, res) => {
 	}
 };
 
+const getRepairOrderById = async (req, res) => {
+	try {
+		const { id } = req.params;
+		const userId = req.userId;
+
+		const user = await prisma.user.findUnique({
+			where: { id: userId },
+			include: { user_roles: { include: { role: true } } },
+		});
+
+		if (!user) {
+			return res.status(404).json({ error: 'Użytkownik nie istnieje' });
+		}
+
+		const userRole = user.user_roles[0]?.role?.name;
+
+		const repairOrder = await prisma.repairOrder.findUnique({
+			where: { id },
+			include: {
+				vehicle: {
+					include: {
+						model: { include: { brand: true } },
+						user: true,
+					},
+				},
+				status: true,
+				assigned_mechanic: true,
+				service_request: true,
+				order_part_item: true,
+			},
+		});
+
+		if (!repairOrder) {
+			return res.status(404).json({ error: 'Naprawa nie istnieje' });
+		}
+
+		if (userRole === 'Mechanik' && repairOrder.assigned_mechanic_id !== userId) {
+			return res.status(403).json({ error: 'Brak dostępu do tej naprawy' });
+		}
+
+		if (userRole === 'Klient' && repairOrder.vehicle.user_id !== userId) {
+			return res.status(403).json({ error: 'Brak dostępu do tej naprawy' });
+		}
+
+		return res.status(200).json(repairOrder);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Błąd serwera' });
+	}
+};
 module.exports = {
 	createRepairOrder,
 	getRepairOrders,
+	getRepairOrderById,
 	updateRepairOrder,
 	deleteRepairOrder,
 };
